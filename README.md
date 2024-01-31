@@ -1,1 +1,1 @@
-# Proximity-Connect
+# ProximityConnect
