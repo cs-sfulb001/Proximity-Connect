@@ -22,7 +22,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    // Use the TimestampText Composable to display timestamp
+                    TimestampText(System.currentTimeMillis())
                 }
             }
         }
