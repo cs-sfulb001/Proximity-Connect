@@ -20,13 +20,26 @@ class TimestampHandler {
         fun generateTimestamp(): Long {
             return System.currentTimeMillis()
         }
+        fun addEmphasizedTimestamp(timestamp: Long, emoticon: String) {
+            emphasizedTimestamps[timestamp] = emoticon
+        }
+
+        fun getEmphasizedTimestamps(): Map<Long, String> {
+            return emphasizedTimestamps
+        }
     }
 }
 
 @Composable
 fun TimestampText(timestamp: Long, modifier: Modifier = Modifier) {
+    val emphasizedTimestamps = TimestampHandler.getEmphasizedTimestamps()
+    val text = if (emphasizedTimestamps.containsKey(timestamp)) {
+        "${TimestampHandler.formatTimestamp(timestamp)} ${emphasizedTimestamps[timestamp]}"
+    } else {
+        TimestampHandler.formatTimestamp(timestamp)
+    }
     Text(
-        text = TimestampHandler.formatTimestamp(timestamp),
+        text = text,
         modifier = modifier
     )
 }
