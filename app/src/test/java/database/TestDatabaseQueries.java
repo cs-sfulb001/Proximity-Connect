@@ -11,4 +11,8 @@ public class TestDatabaseQueries {
         DatabaseQueries Object = new DatabaseQueries();
         Object.TestOne();
     }
+    @Test public void testAddUser(){
+        DatabaseQueries Object = new DatabaseQueries();
+        int user_id = PCDatabase.getLargestUserID();
+    }
 }
