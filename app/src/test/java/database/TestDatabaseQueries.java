@@ -6,9 +6,9 @@ package database;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class AppTest {
+public class TestDatabaseQueries {
     @Test public void testOne() {
-        App Object = new App();
+        DatabaseQueries Object = new DatabaseQueries();
         Object.TestOne();
     }
 }

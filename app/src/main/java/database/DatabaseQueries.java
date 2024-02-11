@@ -5,17 +5,24 @@
 package database;
 
 import java.sql.*;
-public class App {
-
-    public void TestOne() {
+public class DatabaseQueries {
+    Connection PCDatabase;
+    public DatabaseQueries(){
         String url="jdbc:mysql://98.166.255.71:3306/proximity_connect";
         String username="YellowTeam";
         String password="Yellow411w";
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            PCDatabase = DriverManager.getConnection(url, username, password);
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+    }
 
-            Connection connection = DriverManager.getConnection(url, username, password);
-            Statement statement = connection.createStatement();
+    public void TestOne() {
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Statement statement = PCDatabase.createStatement();
         ResultSet ResultSet=statement.executeQuery("select * from users");
             while(ResultSet.next()){
                 System.out.println(ResultSet.getInt(1)+" "+ResultSet.getString(2)+" "+ResultSet.getString(3)+" "+ResultSet.getString(4)+" ");
@@ -25,4 +32,5 @@ public class App {
             System.out.println(e);
         }
     }
+    public void AddUser(){}
 }
