@@ -32,5 +32,23 @@ public class DatabaseQueries {
             System.out.println(e);
         }
     }
-    public void AddUser(){}
+    public void AddUser(int id, String name, String password, String Date){
+        try{
+            PCDatabase.createStatement().executeQuery("insert into users("+id+","+name+","+password+","+Date+")");
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+
+    }
+    public int getNextID(){
+        try{
+            ResultSet results = PCDatabase.createStatement().executeQuery("select max(user_id) from users");
+            return results.getInt(1)+1;
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        return -1;
+    }
 }

@@ -13,6 +13,11 @@ public class TestDatabaseQueries {
     }
     @Test public void testAddUser(){
         DatabaseQueries Object = new DatabaseQueries();
-        int user_id = PCDatabase.getLargestUserID();
+        int user_id = Object.getNextID();
+        String username = "test";
+        String password = "password";
+        String datecreated = "2024-02-11";
+        Object.AddUser(user_id, username, password, datecreated);
     }
+
 }
