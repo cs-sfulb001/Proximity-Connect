@@ -51,7 +51,12 @@ public class DatabaseQueries {
         }
         return -1;
     }
-    public void updatePassword(int user_id, String oldPassword){
-        
+    public void updatePassword(int user_id, String oldPassword, String newpassword){
+        try{
+            PCDatabase.createStatement().execute("update users set user_password=\'"+newpassword+"\' where user_id="+user_id+" and user_password=\'"+oldPassword+"\'");
+        }
+        catch (Exception e){
+            System.out.println("GetUpdatePassword Error:\n    "+e);
+        }
     }
 }

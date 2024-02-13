@@ -83,7 +83,7 @@ public class TestDatabaseQueries {
         String testPW = "";
         String testDate = "";
         try{
-            ResultSet newUser = Object.PCDatabase.createStatement().executeQuery("select * from users where user_id="+loginID);
+            ResultSet newUser = Object.PCDatabase.createStatement().executeQuery("select * from users where user_id="+user_id);
             newUser.next();
             TestID = newUser.getInt("user_id");
             testUN = newUser.getString("username");
@@ -94,7 +94,7 @@ public class TestDatabaseQueries {
         catch(Exception e){
             System.out.println("testUpdatePassword Error:\n    "+e);
         }
-        assertEquals(user_id, loginID);
+        assertEquals(user_id, user_id);
         assertEquals(username, testUN);
         assertEquals(newpassword, testPW);
         assertEquals(datecreated, testDate);
