@@ -6,11 +6,77 @@ package database;
 import java.sql.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat; 
+import static org.hamcrest.Matchers.*;
 
 public class TestDatabaseQueries {
+    @Test public void testNextUserID(){
+        DatabaseQueries Object = new DatabaseQueries();
+        Object.fillSampleData(); 
+        assertThat(Object.getNextUserID(), is(not(equalTo(-1))));
+        int user_id = Object.getNextUserID();
+        String username = "test";
+        String password = "password";
+        String datecreated = "2024-02-11";
+        Object.AddUser(user_id, username, password, datecreated);
+        int nextID = Object.getNextUserID();
+        try{
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+        }
+        catch(Exception e){
+            System.out.println("testNextUserID Error:\n    "+e);
+        }
+        assertEquals(user_id+1, nextID);
+    }
+    @Test public void testNextGroupID(){
+        DatabaseQueries Object = new DatabaseQueries();
+        int group_id = Object.nextGroupID();
+        assertThat(group_id, is(not(equalTo(-1))));
+        int user_id = Object.nextGroupID();
+        String username = "test";
+        String password = "password";
+        String datecreated = "2024-02-11";
+        Object.AddUser(user_id, username, password, datecreated);
+        String group_name = "test";
+        Object.CreateGroup(group_id, group_name, user_id);
+        int nextID = Object.nextGroupID();
+        try{
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+        }
+        catch(Exception e){
+            System.out.println("testNextUserID Error:\n    "+e);
+        }
+        assertEquals(group_id+1, nextID);
+    }
+    @Test public void testCreateGroup(){
+        DatabaseQueries Object = new DatabaseQueries();
+        int group_id = Object.nextGroupID();
+        assertThat(group_id, is(not(equalTo(-1))));
+        int user_id = Object.getNextUserID();
+        String username = "test";
+        String password = "password";
+        String datecreated = "2024-02-11";
+        Object.AddUser(user_id, username, password, datecreated);
+        String group_name = "test";
+        Object.CreateGroup(group_id, group_name, user_id);
+        String Storedgroup_name = "";
+        int group_Creator = -1;
+        try{
+            ResultSet GroupQuery = Object.PCDatabase.createStatement().executeQuery("select * from user_group where group_id="+group_id);
+            GroupQuery.next();
+            Storedgroup_name=GroupQuery.getString("group_name");
+            group_Creator=GroupQuery.getInt("group_creator");
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+        }
+        catch(Exception e){
+            System.out.println("testNextUserID Error:\n    "+e);
+        }
+        assertEquals(group_name, Storedgroup_name);
+        assertEquals(user_id, group_Creator);
+    }
     @Test public void testAddUser(){
         DatabaseQueries Object = new DatabaseQueries();
-        int user_id = Object.getNextID();
+        int user_id = Object.getNextUserID();
         String username = "test";
         String password = "password";
         String datecreated = "2024-02-11";
@@ -19,37 +85,49 @@ public class TestDatabaseQueries {
         String testUN = "";
         String testPW = "";
         String testDate = "";
+        String defaultFName="";
+        String defaultLName="";
+        String defaultUIColor="";
+        String defaultFont="";
+        String defaultPP="";
+        String defaultPrimaryLanguage="";
         try{
             ResultSet newUser = Object.PCDatabase.createStatement().executeQuery("select * from users where user_id="+user_id);
             newUser.next();
-            TestID = newUser.getInt("user_id");
             testUN = newUser.getString("username");
             testPW = newUser.getString("user_password");
             testDate = newUser.getString("created_at");
+            ResultSet defaultSettings = Object.PCDatabase.createStatement().executeQuery("select * from user_settings where user_id="+user_id);
+            defaultSettings.next();
+            defaultFName = defaultSettings.getString("first_name");
+            defaultLName = defaultSettings.getString("last_name");
+            defaultUIColor = defaultSettings.getString("UI_Color");
+            defaultFont = defaultSettings.getString("UI_Font");
+            defaultPP = defaultSettings.getString("profile_picture");
+            defaultPrimaryLanguage = defaultSettings.getString("primary_language");
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
         }
         catch(Exception e){
             System.out.println("testAddUser Error:\n    "+e);
         }
-        assertEquals(user_id, TestID);
         assertEquals(username, testUN);
         assertEquals(password, testPW);
         assertEquals(datecreated, testDate);
-        try{
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
-            
-        }
-        catch(Exception e){
-            System.out.println("testAddUser Error:\n    "+e);
-        }
+        assertEquals("FirstName", defaultFName);
+        assertEquals( "LastName", defaultLName);
+        assertEquals(null, defaultPP);
+        assertEquals("English", defaultPrimaryLanguage);
+        assertEquals("Times New Roman", defaultFont);
+        assertEquals("(255, 255, 255)", defaultUIColor);
     }
-    @Test public void testLogin(){
+    @Test public void testLogin(){//Make sure Usernames are unique
         DatabaseQueries Object = new DatabaseQueries();
-        int user_id = Object.getNextID();
+        int user_id = Object.getNextUserID();
         String username = "test";
         String password = "password";
         String datecreated = "2024-02-11";
         Object.AddUser(user_id, username, password, datecreated);
-        int loginID = Object.Login(username, password);
+        int loginID = Object.Login(user_id, password);
         String testUN = "";
         String testPW = "";
         String testDate = "";
@@ -71,7 +149,7 @@ public class TestDatabaseQueries {
     }
     @Test public void testUpdatePassword(){
         DatabaseQueries Object = new DatabaseQueries();
-        int user_id = Object.getNextID();
+        int user_id = Object.getNextUserID();
         String username = "test";
         String password = "password";
         String datecreated = "2024-02-11";
@@ -98,6 +176,46 @@ public class TestDatabaseQueries {
         assertEquals(username, testUN);
         assertEquals(newpassword, testPW);
         assertEquals(datecreated, testDate);
+    }
+    @Test public void testUpdateUserSettings(){
+        DatabaseQueries Object = new DatabaseQueries();
+        int user_id = Object.getNextUserID();
+        String username = "test";
+        String password = "password";
+        String datecreated = "2024-02-11";
+        Object.AddUser(user_id, username, password, datecreated);
+        String newFName="Pine";
+        String newLName="Apple";
+        String newUIColor="(0, 255, 0)";
+        String newFont="Comic Sans";
+        String newPrimaryLanguage="Spanish";
+        Object.updateUserSettings(user_id, newUIColor, newFont, newFName, newLName, newPrimaryLanguage);
+        String storedFName="";
+        String storedLName="";
+        String storedUIColor="";
+        String storedFont="";
+        String storedPP="";
+        String storedPrimaryLanguage="";
+        try{
+            ResultSet Settings = Object.PCDatabase.createStatement().executeQuery("select * from user_settings where user_id="+user_id);
+            Settings.next();
+            storedFName = Settings.getString("first_name");
+            storedLName = Settings.getString("last_name");
+            storedUIColor = Settings.getString("UI_Color");
+            storedFont = Settings.getString("UI_Font");
+            storedPP = Settings.getString("profile_picture");
+            storedPrimaryLanguage = Settings.getString("primary_language");
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+        }
+        catch(Exception e){
+            System.out.println("testUpdateUserSettings Error:\n    "+e);
+        }
+        assertEquals(newFName, storedFName);
+        assertEquals( newLName, storedLName);
+        assertEquals(null, storedPP);
+        assertEquals(newPrimaryLanguage, storedPrimaryLanguage);
+        assertEquals(newFont, storedFont);
+        assertEquals(newUIColor, storedUIColor);
     }
 
 }

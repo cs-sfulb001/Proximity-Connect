@@ -38,4 +38,6 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     implementation("mysql:mysql-connector-java:8.0.33")
+    //hamcrest
+    testImplementation("org.hamcrest:hamcrest-library:2.2")
 }

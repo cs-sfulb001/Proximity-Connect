@@ -7,6 +7,9 @@ package database;
 import java.sql.*;
 public class DatabaseQueries {
     Connection PCDatabase;
+    /*
+     * Constructs the class and connects to the database
+     */
     public DatabaseQueries(){
         String url="jdbc:mysql://98.166.255.71:3306/proximity_connect";
         String username="YellowTeam";
@@ -18,16 +21,42 @@ public class DatabaseQueries {
             System.out.println(e);
         }
     }
+    /*
+     * Fills database with sample data
+     */
+    public void fillSampleData(){
+        String userNames[] = {"Sean", "Charles", "Jon","William","Khama","Brianna"};
+        String password[] = {"1234", "TestPassword", "SomethingSecure", "Pass1234", "Pineapple", "Oranges"};
+        String datecreated[] = {"2024-01-25", "2019-02-11", "1980-05-14", "1999-12-31", "2001-09-25", "2022-04-09"};
+        String color[]={"(255, 0, 255)","(90, 200, 98)","(133, 125, 60)","(30, 170, 99)","(90, 255, 125)","(0, 255, 255)",};
+        String UIFont[]={"Times New Roman", "Comic Sans", "Calibri", "Bell MT", "Gill Sans MT", "Gradl"};
+        String PL[]={"English", "English", "Spanish", "German", "English", "English"};
+        String LN[]={"Fulbright", "Milroy", "Rossy", "Glavin", "Jeffrey", "Spigner"};
+        for(int i =0;i<6;i++){
+            int UID = getNextUserID();
+            AddUser(UID, userNames[i], password[i], datecreated[i]);
+            updateUserSettings(UID, color[i], UIFont[i], userNames[i], LN[i], PL[i]);
+        }
+        CreateGroup(nextGroupID(), "Pineapples", 1);
+        CreateGroup(nextGroupID(), "TestGroup", 3);
+    }
+    /*
+     * Adds a new user for to the data base
+     * 
+     */
     public void AddUser(int id, String name, String password, String Date){
         try{
             PCDatabase.createStatement().execute("insert into users (user_id, username, user_password, created_at) values("+id+", \'"+name+"\', \'"+password+"\', \'"+Date+"\')");
         }
         catch (Exception e){
-            System.out.println("Add user Error:\n    "+e);
+            System.out.println("AddUser Error:\n    "+e);
         }
-
+        defaultSettings(id);
     }
-    public int getNextID(){
+    /*
+     * Gets the next available ID for a User 
+     */
+    public int getNextUserID(){
         try{
             ResultSet results = PCDatabase.createStatement().executeQuery("select max(user_id) from users");
             if(results.next())
@@ -36,13 +65,13 @@ public class DatabaseQueries {
                 return 1;
         }
         catch (Exception e){
-            System.out.println("GetNextID Error:\n    "+e);
+            System.out.println("GetNextUserID Error:\n    "+e);
         }
         return -1;
     }
-    public int Login(String username, String password){
+    public int Login(int userID, String password){
         try{
-            ResultSet results = PCDatabase.createStatement().executeQuery("select user_id from users where username=\'"+username+"\' and user_password=\'"+password+"\'");
+            ResultSet results = PCDatabase.createStatement().executeQuery("select user_id from users where user_id="+userID+" and user_password=\'"+password+"\'");
             if(results.next())
                 return results.getInt("user_id");
         }
@@ -56,7 +85,44 @@ public class DatabaseQueries {
             PCDatabase.createStatement().execute("update users set user_password=\'"+newpassword+"\' where user_id="+user_id+" and user_password=\'"+oldPassword+"\'");
         }
         catch (Exception e){
-            System.out.println("GetUpdatePassword Error:\n    "+e);
+            System.out.println("updatePassword Error:\n    "+e);
+        }
+    }
+    public void defaultSettings(int UID){
+        try{
+            PCDatabase.createStatement().execute("insert into user_settings (user_id, UI_color, UI_Font, first_name, last_name, primary_language) values ("+UID+", \'(255, 255, 255)\', \'Times New Roman\', \'FirstName\', \'LastName\',\'English\')");
+        }
+        catch (Exception e){
+            System.out.println("defaultSettings Error:\n    "+e);
+        }
+    }
+    public void updateUserSettings(int UID, String color, String Font, String Fname, String LName, String primary_language){
+        try{
+            PCDatabase.createStatement().execute("update user_settings set UI_color=\'"+color+"\', UI_Font=\'"+Font+"\', first_name=\'"+Fname+"\', last_name=\'"+LName+"\', primary_language=\'"+primary_language+"\' where user_id="+UID+"");
+        }
+        catch (Exception e){
+            System.out.println("updateUserSettings Error:\n    "+e);
+        }
+    }
+    public int nextGroupID(){
+        try{
+            ResultSet results = PCDatabase.createStatement().executeQuery("select max(group_id) from user_group");
+            if(results.next())
+                return results.getInt(1) + 1;
+            else
+                return 1;
+        }
+        catch (Exception e){
+            System.out.println("GetNextGroupID Error:\n    "+e);
+        }
+        return -1;
+    }
+    public void CreateGroup(int groupID, String name, int creatorID){
+        try{
+            PCDatabase.createStatement().execute("insert into user_group (group_id, group_name, group_creator) values ("+groupID+", \'"+name+"\', "+creatorID+")");
+        }
+        catch (Exception e){
+            System.out.println("CreateGroup Error:\n    "+e);
         }
     }
 }
