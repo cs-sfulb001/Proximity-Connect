@@ -59,16 +59,10 @@ public class TestDatabaseQueries {
             testUN = newUser.getString("username");
             testPW = newUser.getString("user_password");
             testDate = newUser.getString("created_at");
-        }
-        catch(Exception e){
-            System.out.println("testAddUser Error:\n    "+e);
-        }
-        try{
             Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
-            
         }
         catch(Exception e){
-            System.out.println("testAddUser Error:\n    "+e);
+            System.out.println("testLogin Error:\n    "+e);
         }
         assertEquals(user_id, loginID);
         assertEquals(username, testUN);
@@ -82,7 +76,8 @@ public class TestDatabaseQueries {
         String password = "password";
         String datecreated = "2024-02-11";
         Object.AddUser(user_id, username, password, datecreated);
-        Object.updatePassword(user_id, password);
+        String newpassword = "1234";
+        Object.updatePassword(user_id, password, newpassword);
         int TestID = -1;
         String testUN = "";
         String testPW = "";
@@ -94,7 +89,15 @@ public class TestDatabaseQueries {
             testUN = newUser.getString("username");
             testPW = newUser.getString("user_password");
             testDate = newUser.getString("created_at");
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
         }
+        catch(Exception e){
+            System.out.println("testUpdatePassword Error:\n    "+e);
+        }
+        assertEquals(user_id, loginID);
+        assertEquals(username, testUN);
+        assertEquals(newpassword, testPW);
+        assertEquals(datecreated, testDate);
     }
 
 }
