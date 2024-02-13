@@ -18,37 +18,40 @@ public class DatabaseQueries {
             System.out.println(e);
         }
     }
-
-    public void TestOne() {
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Statement statement = PCDatabase.createStatement();
-        ResultSet ResultSet=statement.executeQuery("select * from users");
-            while(ResultSet.next()){
-                System.out.println(ResultSet.getInt(1)+" "+ResultSet.getString(2)+" "+ResultSet.getString(3)+" "+ResultSet.getString(4)+" ");
-            }
-        }
-        catch (Exception e){
-            System.out.println(e);
-        }
-    }
     public void AddUser(int id, String name, String password, String Date){
         try{
-            PCDatabase.createStatement().executeQuery("insert into users("+id+","+name+","+password+","+Date+")");
+            PCDatabase.createStatement().execute("insert into users (user_id, username, user_password, created_at) values("+id+", \'"+name+"\', \'"+password+"\', \'"+Date+"\')");
         }
         catch (Exception e){
-            System.out.println(e);
+            System.out.println("Add user Error:\n    "+e);
         }
 
     }
     public int getNextID(){
         try{
             ResultSet results = PCDatabase.createStatement().executeQuery("select max(user_id) from users");
-            return results.getInt(1)+1;
+            if(results.next())
+                return results.getInt(1) + 1;
+            else
+                return 1;
         }
         catch (Exception e){
-            System.out.println(e);
+            System.out.println("GetNextID Error:\n    "+e);
         }
         return -1;
+    }
+    public int Login(String username, String password){
+        try{
+            ResultSet results = PCDatabase.createStatement().executeQuery("select user_id from users where username=\'"+username+"\' and user_password=\'"+password+"\'");
+            if(results.next())
+                return results.getInt("user_id");
+        }
+        catch (Exception e){
+            System.out.println("GetNextID Error:\n    "+e);
+        }
+        return -1;
+    }
+    public void updatePassword(int user_id, String oldPassword){
+        
     }
 }

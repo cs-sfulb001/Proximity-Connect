@@ -3,14 +3,11 @@
  */
 package database;
 
+import java.sql.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TestDatabaseQueries {
-    @Test public void testOne() {
-        DatabaseQueries Object = new DatabaseQueries();
-        Object.TestOne();
-    }
     @Test public void testAddUser(){
         DatabaseQueries Object = new DatabaseQueries();
         int user_id = Object.getNextID();
@@ -18,6 +15,86 @@ public class TestDatabaseQueries {
         String password = "password";
         String datecreated = "2024-02-11";
         Object.AddUser(user_id, username, password, datecreated);
+        int TestID = -1;
+        String testUN = "";
+        String testPW = "";
+        String testDate = "";
+        try{
+            ResultSet newUser = Object.PCDatabase.createStatement().executeQuery("select * from users where user_id="+user_id);
+            newUser.next();
+            TestID = newUser.getInt("user_id");
+            testUN = newUser.getString("username");
+            testPW = newUser.getString("user_password");
+            testDate = newUser.getString("created_at");
+        }
+        catch(Exception e){
+            System.out.println("testAddUser Error:\n    "+e);
+        }
+        assertEquals(user_id, TestID);
+        assertEquals(username, testUN);
+        assertEquals(password, testPW);
+        assertEquals(datecreated, testDate);
+        try{
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+            
+        }
+        catch(Exception e){
+            System.out.println("testAddUser Error:\n    "+e);
+        }
+    }
+    @Test public void testLogin(){
+        DatabaseQueries Object = new DatabaseQueries();
+        int user_id = Object.getNextID();
+        String username = "test";
+        String password = "password";
+        String datecreated = "2024-02-11";
+        Object.AddUser(user_id, username, password, datecreated);
+        int loginID = Object.Login(username, password);
+        String testUN = "";
+        String testPW = "";
+        String testDate = "";
+        try{
+            ResultSet newUser = Object.PCDatabase.createStatement().executeQuery("select * from users where user_id="+loginID);
+            newUser.next();
+            testUN = newUser.getString("username");
+            testPW = newUser.getString("user_password");
+            testDate = newUser.getString("created_at");
+        }
+        catch(Exception e){
+            System.out.println("testAddUser Error:\n    "+e);
+        }
+        try{
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+            
+        }
+        catch(Exception e){
+            System.out.println("testAddUser Error:\n    "+e);
+        }
+        assertEquals(user_id, loginID);
+        assertEquals(username, testUN);
+        assertEquals(password, testPW);
+        assertEquals(datecreated, testDate);
+    }
+    @Test public void testUpdatePassword(){
+        DatabaseQueries Object = new DatabaseQueries();
+        int user_id = Object.getNextID();
+        String username = "test";
+        String password = "password";
+        String datecreated = "2024-02-11";
+        Object.AddUser(user_id, username, password, datecreated);
+        Object.updatePassword(user_id, password);
+        int TestID = -1;
+        String testUN = "";
+        String testPW = "";
+        String testDate = "";
+        try{
+            ResultSet newUser = Object.PCDatabase.createStatement().executeQuery("select * from users where user_id="+loginID);
+            newUser.next();
+            TestID = newUser.getInt("user_id");
+            testUN = newUser.getString("username");
+            testPW = newUser.getString("user_password");
+            testDate = newUser.getString("created_at");
+        }
     }
 
 }
