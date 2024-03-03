@@ -3,6 +3,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.clickable
 import com.example.proximity_connect.TranscriptEntry
 import java.text.SimpleDateFormat
 import java.util.*
