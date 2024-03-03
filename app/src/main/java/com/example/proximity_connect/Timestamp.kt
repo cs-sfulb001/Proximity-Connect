@@ -1,12 +1,6 @@
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.clickable
-import com.example.proximity_connect.TranscriptEntry
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 class MeetingFlagHandler {
 
@@ -20,10 +14,7 @@ class MeetingFlagHandler {
 
         // Function to add meeting flag to transcript entry
         fun addMeetingFlag(entry: TranscriptEntry, flagTimestamp: Long): TranscriptEntry {
-            // In this function, you might want to add the flag timestamp to the TranscriptEntry
-            // You can modify the TranscriptEntry class to include a flag timestamp field if needed
-            // For now, let's just return the original entry
-            return entry
+            return entry.copy(flagTimestamp = flagTimestamp)
         }
     }
 }
@@ -40,16 +31,22 @@ fun MeetingFlagText(
             modifier = modifier,
         )
         Text(
-            text = "Flag Timestamp: ${MeetingFlagHandler.formatMeetingFlagTimestamp(transcriptEntry.timestamp)}",
+            text = "Flag Timestamp: ${
+                if (transcriptEntry.flagTimestamp != null)
+                    MeetingFlagHandler.formatMeetingFlagTimestamp(transcriptEntry.flagTimestamp!!)
+                else "No Flag"
+            }",
             modifier = modifier,
         )
-        Text(
-            text = "Add Meeting Flag",
-            modifier = modifier.clickable {
-                // Simulate add meeting flag current transcript entry
-                val currentTimeMillis = System.currentTimeMillis()
-                onMeetingFlagAdded(transcriptEntry, currentTimeMillis)
-            }
-        )
+        if (transcriptEntry.flagTimestamp == null) {
+            Text(
+                text = "Add Meeting Flag",
+                modifier = modifier.clickable {
+                    // Simulate add meeting flag to current transcript entry
+                    val currentTimeMillis = System.currentTimeMillis()
+                    onMeetingFlagAdded(transcriptEntry, currentTimeMillis)
+                }
+            )
+        }
     }
 }

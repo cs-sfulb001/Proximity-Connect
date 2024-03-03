@@ -14,6 +14,11 @@ object TimestampHandler {
         val date = Date(timestamp)
         return dateFormat.format(date)
     }
+
+    // Function to search for meeting flags
+    fun searchMeetingFlags(transcript: List<TranscriptEntry>): List<TranscriptEntry> {
+        return transcript.filter { it.sentence.contains("[FLAG]", ignoreCase = true) }
+    }
 }
 
 fun main() {
@@ -52,7 +57,7 @@ fun main() {
             val lineNumber = input?.toIntOrNull()
             if (lineNumber != null && lineNumber >= 0 && lineNumber < sampleConversation.size) {
                 val flagTimestamp = System.currentTimeMillis()
-                transcript.add(TranscriptEntry(flagTimestamp, sampleConversation[lineNumber]))
+                transcript.add(TranscriptEntry(flagTimestamp, sampleConversation[lineNumber] + " [FLAG]"))
                 println("Flag added at line $lineNumber")
             } else {
                 println("Invalid line number. Please enter a valid line number or 'exit' to finish.")
@@ -60,14 +65,18 @@ fun main() {
         }
     } while (!input.equals("exit", ignoreCase = true))
 
-    // Display conversation transcript with meeting flags
-    println("\nConversation Transcript with Meeting Flags:")
-    sampleConversation.forEachIndexed { index, sentence ->
-        val flagEntry = transcript.find { it.sentence == sentence }
-        if (flagEntry != null) {
-            println("${TimestampHandler.formatTimestamp(flagEntry.flagTimestamp)}: $sentence [FLAG]")
+    // Prompt the user to search for meeting flags
+    println("\nSearch for meeting flags in the transcript? (yes/no)")
+    input = readLine()
+    if (input.equals("yes", ignoreCase = true)) {
+        val meetingFlags = transcript.filter { it.sentence.contains("[FLAG]", ignoreCase = true) }
+        if (meetingFlags.isNotEmpty()) {
+            println("\nMeeting flags found in the transcript:")
+            meetingFlags.forEachIndexed { index, entry ->
+                println("${index + 1}: ${entry.sentence}")
+            }
         } else {
-            println(sentence)
+            println("\nNo meeting flags found in the transcript.")
         }
     }
 }
