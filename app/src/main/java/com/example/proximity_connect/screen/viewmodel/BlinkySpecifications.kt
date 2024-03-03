@@ -1,4 +1,4 @@
-package no.nordicsemi.android.kotlin.ble.app.client.screen.viewmodel
+package com.example.proximity_connect.screen.viewmodel
 
 import java.util.UUID
 

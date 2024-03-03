@@ -1,5 +1,5 @@
-package no.nordicsemi.android.kotlin.ble.app.client.screen.viewmodel
-/*
+package com.example.proximity_connect.screen.viewmodel
+
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.SavedStateHandle
@@ -14,10 +14,10 @@ import kotlinx.coroutines.launch
 import no.nordicsemi.android.common.core.DataByteArray
 import no.nordicsemi.android.common.navigation.Navigator
 import no.nordicsemi.android.common.navigation.viewmodel.SimpleNavigationViewModel
-import no.nordicsemi.android.kotlin.ble.app.client.BlinkyDestinationId
-import no.nordicsemi.android.kotlin.ble.app.client.screen.repository.BlinkyButtonParser
-import no.nordicsemi.android.kotlin.ble.app.client.screen.repository.BlinkyLedParser
-import no.nordicsemi.android.kotlin.ble.app.client.screen.view.BlinkyViewState
+import com.example.proximity_connect.BlinkyDestinationId
+import com.example.proximity_connect.screen.repository.BlinkyButtonParser
+import com.example.proximity_connect.screen.repository.BlinkyLedParser
+import com.example.proximity_connect.screen.view.BlinkyViewState
 import no.nordicsemi.android.kotlin.ble.client.main.callback.ClientBleGatt
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattCharacteristic
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattServices
@@ -102,4 +102,3 @@ class BlinkyViewModel @Inject constructor(
         }
     }
 }
-*/

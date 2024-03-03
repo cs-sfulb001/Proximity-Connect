@@ -1,4 +1,4 @@
-package com.example.proximity_connect.client.screen.view
+package com.example.proximity_connect.screen.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

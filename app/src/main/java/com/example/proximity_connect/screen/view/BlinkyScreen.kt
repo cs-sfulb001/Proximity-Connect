@@ -29,8 +29,8 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package no.nordicsemi.android.kotlin.ble.app.client.screen.view
-/*
+package com.example.proximity_connect.screen.view
+
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,8 +50,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import no.nordicsemi.android.common.permissions.ble.RequireBluetooth
 import no.nordicsemi.android.common.permissions.ble.RequireLocation
 import no.nordicsemi.android.common.theme.view.NordicAppBar
-import no.nordicsemi.android.kotlin.ble.app.client.R
-import no.nordicsemi.android.kotlin.ble.app.client.screen.viewmodel.BlinkyViewModel
+import com.example.proximity_connect.R
+import com.example.proximity_connect.screen.viewmodel.BlinkyViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -103,4 +103,3 @@ fun BlinkyScreen() {
         }
     }
 }
-*/

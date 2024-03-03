@@ -1,4 +1,4 @@
-package no.nordicsemi.android.kotlin.ble.app.client.screen.view
+package com.example.proximity_connect.screen.view
 
 data class BlinkyViewState(
     val isButtonPressed: Boolean = false,
