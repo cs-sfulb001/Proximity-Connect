@@ -31,7 +31,7 @@ dependencies {
     implementation 'com.google.guava:guava:31.1-jre'
     implementation group: 'edu.cmu.sphinx', name: 'sphinx4-core', version:'5prealpha-SNAPSHOT'
     implementation group: 'edu.cmu.sphinx', name: 'sphinx4-data', version:'5prealpha-SNAPSHOT'
-    
+    implementation 'com.assemblyai:assemblyai-java:1.x.x'
 }
 
 application {
