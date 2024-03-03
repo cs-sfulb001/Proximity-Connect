@@ -1,27 +1,22 @@
-// Define data class represent each entry in the transcript
-data class TranscriptEntry(val timestamp: Long, val sentence: String)
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import java.util.*
 
-// Sample transcript
-val transcript = listOf(
-    TranscriptEntry(0, "Hello, how are you?"),
-    TranscriptEntry(5000, "I'm doing well, thank you."),
-    TranscriptEntry(10000, "What about you?")
-)
+data class TranscriptEntry(val flagTimestamp: Long, val sentence: String)
 
-// Display transcript with timestamps
+// Composable function display a transcript entry with meeting flag
 @Composable
-fun TranscriptWithTimestamps(transcript: List<TranscriptEntry>) {
-    transcript.forEach { entry ->
-        Row {
-            TimestampText(timestamp = entry.timestamp)
-            Text(text = entry.sentence)
-        }
+fun TranscriptEntryWithMeetingFlag(entry: TranscriptEntry) {
+    Row {
+        Text(text = "${Date(entry.flagTimestamp)}: ${entry.sentence}")
     }
 }
 
-// usage in UI
+// Composable function to display transcript with meeting flags
 @Composable
-fun YourUIComponent() {
-    // Call the function to display the transcript with timestamps
-    TranscriptWithTimestamps(transcript = transcript)
+fun TranscriptWithMeetingFlags(transcript: List<TranscriptEntry>) {
+    transcript.forEach { entry ->
+        TranscriptEntryWithMeetingFlag(entry = entry)
+    }
 }

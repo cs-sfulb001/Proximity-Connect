@@ -1,46 +1,31 @@
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
-// Define data class represent each entry in the transcript
-data class TranscriptEntry(val timestamp: Long, val sentence: String)
-
-// Define object to handle timestamp formatting
-object TimestampHandler {
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-
-    // Function to format timestamp
-    fun formatTimestamp(timestamp: Long): String {
-        val date = Date(timestamp)
-        return dateFormat.format(date)
-    }
-}
+data class TranscriptEntry(val flagTimestamp: Long, val sentence: String)
 
 fun main() {
     val transcript = mutableListOf<TranscriptEntry>()
 
-    // Interactive input for adding conversation lines with timestamps
-    println("Enter new conversation lines with timestamps (type 'exit' to finish):")
+    // Interactive input adding conversation lines with meeting flags
+    println("Enter new conversation lines with meeting flags (type 'exit' to finish):")
     var input: String?
     do {
-        print("Timestamp (in milliseconds): ")
-        val timestampInput = readLine()?.toLongOrNull()
+        print("Flag Timestamp (in milliseconds): ")
+        val flagTimestampInput = readLine()?.toLongOrNull()
 
-        if (timestampInput != null) {
+        if (flagTimestampInput != null) {
             print("Sentence: ")
             input = readLine()
             if (!input.equals("exit", ignoreCase = true)) {
-                transcript.add(TranscriptEntry(timestampInput, input ?: ""))
+                transcript.add(TranscriptEntry(flagTimestampInput, input ?: ""))
             }
         } else {
             input = readLine()
         }
     } while (input?.toLowerCase() != "exit")
 
-    // Display conversation transcript with timestamps
-    println("\nConversation Transcript with Timestamps:")
+    // Display transcript with meeting flags
+    println("\nConversation Transcript with Meeting Flags:")
     transcript.forEach { entry ->
-        val timestamp = TimestampHandler.formatTimestamp(entry.timestamp)
-        println("$timestamp: ${entry.sentence}")
+        println("${Date(entry.flagTimestamp)}: ${entry.sentence}")
     }
 }

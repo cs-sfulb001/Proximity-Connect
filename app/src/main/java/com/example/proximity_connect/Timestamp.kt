@@ -8,27 +8,31 @@ import com.example.proximity_connect.TranscriptEntry
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TimestampHandler {
+class MeetingFlagHandler {
 
     companion object {
-        fun formatTimestamp(timestamp: Long): String {
+        // Function to format meeting flag timestamp
+        fun formatMeetingFlagTimestamp(timestamp: Long): String {
             val date = Date(timestamp)
             val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
             return format.format(date)
         }
 
-        // Function to add timestamp to a transcript entry
-        fun addTimestamp(entry: TranscriptEntry, timestamp: Long): TranscriptEntry {
-            return entry.copy(timestamp = timestamp)
+        // Function to add meeting flag to transcript entry
+        fun addMeetingFlag(entry: TranscriptEntry, flagTimestamp: Long): TranscriptEntry {
+            // In this function, you might want to add the flag timestamp to the TranscriptEntry
+            // You can modify the TranscriptEntry class to include a flag timestamp field if needed
+            // For now, let's just return the original entry
+            return entry
         }
     }
 }
 
 @Composable
-fun TimestampText(
+fun MeetingFlagText(
     transcriptEntry: TranscriptEntry,
     modifier: Modifier = Modifier,
-    onTimestampAdded: (TranscriptEntry, Long) -> Unit
+    onMeetingFlagAdded: (TranscriptEntry, Long) -> Unit
 ) {
     Column(modifier = modifier.verticalScroll()) {
         Text(
@@ -36,15 +40,15 @@ fun TimestampText(
             modifier = modifier,
         )
         Text(
-            text = "Timestamp: ${TimestampHandler.formatTimestamp(transcriptEntry.timestamp)}",
+            text = "Flag Timestamp: ${MeetingFlagHandler.formatMeetingFlagTimestamp(transcriptEntry.timestamp)}",
             modifier = modifier,
         )
         Text(
-            text = "Add Timestamp",
+            text = "Add Meeting Flag",
             modifier = modifier.clickable {
-                // Simulate add timestamp at current transcript entry
+                // Simulate add meeting flag current transcript entry
                 val currentTimeMillis = System.currentTimeMillis()
-                onTimestampAdded(transcriptEntry, currentTimeMillis)
+                onMeetingFlagAdded(transcriptEntry, currentTimeMillis)
             }
         )
     }
