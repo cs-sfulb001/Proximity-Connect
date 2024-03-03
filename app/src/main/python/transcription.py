@@ -1,13 +1,8 @@
-# Start by making sure the `assemblyai` package is installed.
-# If not, you can install it by running the following command:
-# pip install -U assemblyai
-#
-# Note: Some macOS users may need to use `pip3` instead of `pip`.
-
 import assemblyai as aai
 
-# Replace with your API key
 aai.settings.api_key = "353ff195df9d4243b247c2ecb4b80b46"
+
+USERNAME = "Brianna"
 
 # URL of the file to transcribe
 FILE_URL = r"C:\Users\Brianna\Desktop\SeniorProject\Proximity-Connect\app\src\main\python\burger-king-foot-lettuce.mp3"
@@ -21,4 +16,4 @@ transcript = transcriber.transcribe(FILE_URL)
 if transcript.status == aai.TranscriptStatus.error:
     print(transcript.error)
 else:
-    print(transcript.text)
+    print(USERNAME + ": " + transcript.text)
