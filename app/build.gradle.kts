@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+
+
 android {
     namespace = "com.example.proximity_connect"
     compileSdk = 34
@@ -60,10 +62,18 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("no.nordicsemi.android.kotlin.ble:scanner:1.0.15")
-    implementation("no.nordicsemi.android.kotlin.ble:scanner:1.0.15")
     implementation("no.nordicsemi.android.kotlin.ble:client:1.0.15")
     implementation("no.nordicsemi.android.kotlin.ble:advertiser:1.0.15")
     implementation("no.nordicsemi.android.kotlin.ble:server:1.0.15")
+    implementation("no.nordicsemi.android.common:analytics:1.9.4")
+    implementation("no.nordicsemi.android.common:navigation:1.9.4")
+    implementation("no.nordicsemi.android.kotlin.ble:core:1.0.15")
+    implementation("no.nordicsemi.android.kotlin.ble:logger:0.2.1")
+    implementation("androidx.compose.material:material-icons-extended:1.6.2")
+    implementation("no.nordicsemi.android.common:theme:1.9.4")
+    implementation("no.nordicsemi.android.kotlin.ble:advertiser:1.0.15")
+    implementation("no.nordicsemi.android.common:analytics:1.9.4")
+    implementation("com.github.jeziellago:compose-markdown:0.3.6")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
