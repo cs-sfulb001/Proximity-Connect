@@ -1,22 +1,22 @@
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import java.util.*
+import java.util.Date
 
-data class TranscriptEntry(val flagTimestamp: Long, val sentence: String)
+data class TranscriptEntry(val timestamp: Long, val sentence: String, val hasMeetingFlag: Boolean = false)
 
-// Composable function display a transcript entry with meeting flag
+// Composable function to display a transcript entry
 @Composable
-fun TranscriptEntryWithMeetingFlag(entry: TranscriptEntry) {
+fun TranscriptEntryWithTimestampAndFlag(entry: TranscriptEntry) {
     Row {
-        Text(text = "${Date(entry.flagTimestamp)}: ${entry.sentence}")
+        Text(text = "${Date(entry.timestamp)}: ${entry.sentence} ${if (entry.hasMeetingFlag) "[FLAG]" else ""}")
     }
 }
 
-// Composable function to display transcript with meeting flags
+// Composable function to display the transcript
 @Composable
-fun TranscriptWithMeetingFlags(transcript: List<TranscriptEntry>) {
+fun TranscriptWithTimestampsAndFlags(transcript: List<TranscriptEntry>) {
     transcript.forEach { entry ->
-        TranscriptEntryWithMeetingFlag(entry = entry)
+        TranscriptEntryWithTimestampAndFlag(entry = entry)
     }
 }
