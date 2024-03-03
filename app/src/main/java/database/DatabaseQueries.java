@@ -120,9 +120,85 @@ public class DatabaseQueries {
     public void CreateGroup(int groupID, String name, int creatorID){
         try{
             PCDatabase.createStatement().execute("insert into user_group (group_id, group_name, group_creator) values ("+groupID+", \'"+name+"\', "+creatorID+")");
+            PCDatabase.createStatement().execute("insert into group_members (group_id, user_id) values ("+groupID+", "+creatorID+")");
         }
         catch (Exception e){
             System.out.println("CreateGroup Error:\n    "+e);
+        }
+    }
+    public void addGroupMember(int groupID, int userID){
+        try{
+            PCDatabase.createStatement().execute("insert into group_members (user_id, group_id) values ("+userID+", "+groupID+")");
+        }
+        catch (Exception e){
+            System.out.println("CreateGroup Error:\n    "+e);
+        }
+    }
+    public int[] getGroups(int user_id){
+        try{
+            ResultSet len = PCDatabase.createStatement().executeQuery("select count(group_id) from group_members where user_id="+user_id);
+            int group_values[];
+            if(len.next()){
+                group_values = new int[len.getInt(1)];
+            }
+            else{
+                return null;
+            }
+            ResultSet groups = PCDatabase.createStatement().executeQuery("select * from group_members where user_id="+user_id);
+            int i =0;
+            while(groups.next()){
+                group_values[i]=groups.getInt("group_id");
+                i++;
+            }
+            return group_values;
+        }
+        catch(Exception e){
+            System.out.println("getGroups Error:\n    "+e);
+        }
+        return null;
+    }
+    public int[] getGroupMembers(int group_id){
+        try{
+            ResultSet len = PCDatabase.createStatement().executeQuery("select count(user_id) from group_members where group_id="+group_id);
+            int members[];
+            if(len.next()){
+                members = new int[len.getInt(1)];
+            }
+            else{
+                return null;
+            }
+            ResultSet Members = PCDatabase.createStatement().executeQuery("select * from group_members where group_id="+group_id);
+            int i =0;
+            while(Members.next()){
+                members[i]=Members.getInt("user_id");
+                i++;
+            }
+            return members;
+        }
+        catch(Exception e){
+            System.out.println("getGroupMembers Error:\n    "+e);
+        }
+        return null;
+    }
+    public int getNextMeetingID(){
+        try{
+            ResultSet results = PCDatabase.createStatement().executeQuery("select max(meeting_id) from group_meetings");
+            if(results.next())
+                return results.getInt(1) + 1;
+            else
+                return 1;
+        }
+        catch(Exception e){
+            System.out.println("getNextMeetingID Error:\n    "+e);
+        }
+        return -1;
+    }
+    public void CreateMeeting(int meeting_id, int group_id, String meeting_name, String dateTime, boolean shareable){
+        try{
+            PCDatabase.createStatement().execute("insert into group_meetings (meeting_id, group_id, meeting_name, meeting_date, shareable) values ("+meeting_id+", "+group_id+", \'"+meeting_name+"\', \'"+dateTime+"\', "+shareable+")");
+        }
+        catch(Exception e){
+            System.out.println("CreateMeeting Error:\n    "+e);
         }
     }
 }
