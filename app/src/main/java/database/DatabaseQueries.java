@@ -21,6 +21,12 @@ public class DatabaseQueries {
             System.out.println(e);
         }
     }
+    
+    /*
+     * ---------------------------------------------------------------------------
+     *                             User Functions
+     * ---------------------------------------------------------------------------
+     */
     /*
      * Adds a new user for to the database
      *  
@@ -121,6 +127,11 @@ public class DatabaseQueries {
             System.out.println("updateUserSettings Error:\n    "+e);
         }
     }
+    /*
+     * ---------------------------------------------------------------------------
+     *                             Group Functions
+     * ---------------------------------------------------------------------------
+     */
     /*
      * Querries the database for the next avalible group id
      * 
@@ -228,6 +239,60 @@ public class DatabaseQueries {
         return null;
     }
     /*
+     * Removes a user from the group excluding creator
+     * 
+     * @param group_id  the group id to remove the given user from
+     * @param user_id   the user id to remove from the group
+     */
+    public void removeUserFromGroup(int group_id, int user_id){
+        try{
+            if(getGroupCreator(group_id)!=user_id)
+                PCDatabase.createStatement().execute("delete from group_members where user_id="+user_id+" and group_id="+group_id);
+        }
+        catch(Exception e){
+            System.out.println("removeUserFromGroup Error:\n    "+e);
+        }
+    }
+    /*
+     * Returns a string of the name for the group with the given id
+     * 
+     * @param group_id  the group id to get the name of
+     * @return          the name of the group with the given id or, if the id is not found, an empty string
+     */
+    public String getGroupName(int group_id){
+        try{
+            ResultSet groupName = PCDatabase.createStatement().executeQuery("select group_name from user_group where group_id="+group_id);
+            groupName.next();
+            return groupName.getString("group_name");
+        }
+        catch(Exception e){
+            System.out.println("removeGetGroupName Error:\n    "+e);
+        }
+        return "";
+    }
+    /*
+     * Returns an int of the creator of the group with the given id
+     * 
+     * @param group_id  the group id to get the creator of
+     * @return          the creator of the group with the given id or, if the id is not found, -1
+     */
+    public int getGroupCreator(int group_id){
+        try{
+            ResultSet groupName = PCDatabase.createStatement().executeQuery("select group_creator from user_group where group_id="+group_id);
+            groupName.next();
+            return groupName.getInt("group_creator");
+        }
+        catch(Exception e){
+            System.out.println("removeGetGroupCreator Error:\n    "+e);
+        }
+        return -1;
+    }
+    /*
+     * ---------------------------------------------------------------------------
+     *                             Meeting Functions
+     * ---------------------------------------------------------------------------
+     */
+    /*
      * Returns an int that is the next avalible meeting id in the database
      * 
      * @return      the next avalible id for the meeting table
@@ -292,6 +357,11 @@ public class DatabaseQueries {
         return null;
 
     }
+    /*
+     * ---------------------------------------------------------------------------
+     *                             Message Functions
+     * ---------------------------------------------------------------------------
+     */
     /*
      * Returns an int for the next message id avalible within a meeting
      * 

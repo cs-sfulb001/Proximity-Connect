@@ -329,7 +329,87 @@ public class TestDatabaseQueries {
         assertEquals(user_id2, members[1]);
         assertEquals(user_id3, members[2]);
     }
-    
+    @Test public void testRemoveUserFromGroup(){
+        
+        /*
+         * Setup
+         */
+        //Create Users
+        int user_id = Object.getNextUserID();
+        Object.AddUser(user_id, username[0], password[0], date_created[0]);
+        int user_id2 = Object.getNextUserID();
+        Object.AddUser(user_id2, username[1], password[1], date_created[1]);
+        int user_id3 = Object.getNextUserID();
+        Object.AddUser(user_id3, username[2], password[2], date_created[2]);
+        //Create Group
+        int group_id = Object.nextGroupID();
+        Object.CreateGroup(group_id, group_name[0], user_id);
+        //Add Members
+        Object.addGroupMember(group_id, user_id2);
+        Object.addGroupMember(group_id, user_id3);
+        /*
+         * Verification
+         */
+        Object.removeUserFromGroup(group_id, user_id);
+        Object.removeUserFromGroup(group_id, user_id2);
+        int[] members = Object.getGroupMembers(group_id);
+        try{
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id2);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id3);
+        }
+        catch(Exception e){
+            System.out.println("testRemoveGroupMember Error:\n    "+e);
+        }
+        assertEquals(user_id, members[0]);
+        assertEquals(user_id3, members[1]);
+    }
+    @Test public void testGetGroupName(){
+        /*
+         * Setup
+         */
+        //Create Users
+        int user_id = Object.getNextUserID();
+        Object.AddUser(user_id, username[0], password[0], date_created[0]);
+        int user_id2 = Object.getNextUserID();
+        //Create Group
+        int group_id = Object.nextGroupID();
+        Object.CreateGroup(group_id, group_name[0], user_id);
+        /*
+         * Verification
+         */
+        String storedName = Object.getGroupName(group_id);
+        try{
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+        }
+        catch(Exception e){
+            System.out.println("testGetGroupName Error:\n    "+e);
+        }
+        assertEquals(group_name[0], storedName);
+    }
+    @Test public void testGetGroupCreator(){
+        /*
+         * Setup
+         */
+        //Create Users
+        int user_id = Object.getNextUserID();
+        Object.AddUser(user_id, username[0], password[0], date_created[0]);
+        int user_id2 = Object.getNextUserID();
+        //Create Group
+        int group_id = Object.nextGroupID();
+        Object.CreateGroup(group_id, group_name[0], user_id);
+        /*
+         * Verification
+         */
+        int group_creator = Object.getGroupCreator(group_id);
+        try{
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+        }
+        catch(Exception e){
+            System.out.println("testGetGroupName Error:\n    "+e);
+        }
+        assertEquals(user_id, group_creator);
+    }
     /*
      * ---------------------------------------------------------------------------
      *                               Meeting Tests
