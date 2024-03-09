@@ -28,7 +28,6 @@ public class TestDatabaseQueries {
      * ---------------------------------------------------------------------------
      */
     @Test public void testNextUserID(){
-        //Object.fillSampleData(); 
         /*
          * Setup
          */

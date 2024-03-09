@@ -22,25 +22,6 @@ public class DatabaseQueries {
         }
     }
     /*
-     * Fills database with sample data
-     */
-    public void fillSampleData(){
-        String userNames[] = {"Sean", "Charles", "Jon","William","Khama","Brianna"};
-        String password[] = {"1234", "TestPassword", "SomethingSecure", "Pass1234", "Pineapple", "Oranges"};
-        String datecreated[] = {"2024-01-25", "2019-02-11", "1980-05-14", "1999-12-31", "2001-09-25", "2022-04-09"};
-        String color[]={"(255, 0, 255)","(90, 200, 98)","(133, 125, 60)","(30, 170, 99)","(90, 255, 125)","(0, 255, 255)",};
-        String UIFont[]={"Times New Roman", "Comic Sans", "Calibri", "Bell MT", "Gill Sans MT", "Gradl"};
-        String PL[]={"English", "English", "Spanish", "German", "English", "English"};
-        String LN[]={"Fulbright", "Milroy", "Rossy", "Glavin", "Jeffrey", "Spigner"};
-        for(int i =0;i<6;i++){
-            int UID = getNextUserID();
-            AddUser(UID, userNames[i], password[i], datecreated[i]);
-            updateUserSettings(UID, color[i], UIFont[i], userNames[i], LN[i], PL[i]);
-        }
-        CreateGroup(nextGroupID(), "Pineapples", 1);
-        CreateGroup(nextGroupID(), "TestGroup", 3);
-    }
-    /*
      * Adds a new user for to the database
      *  
      * @param id an int that uniquely identifies the new user
