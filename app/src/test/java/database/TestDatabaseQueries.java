@@ -346,4 +346,70 @@ public class TestDatabaseQueries {
         assertEquals(meeting_datetime, storedMeeting_datetime);
         assertEquals(shareable, storedShareable);
     }
+    @Test public void testGetGroupMeetings(){
+        int group_id = Object.nextGroupID();
+        int user_id = Object.getNextUserID();
+        String username = "test";
+        String password = "password";
+        String datecreated = "2024-02-11";
+        Object.AddUser(user_id, username, password, datecreated);
+        String group_name = "test";
+        Object.CreateGroup(group_id, group_name, user_id);
+        String meeting_name = "Test Meeting";
+        String meeting_datetime = "2024-03-03 12:47:32";
+        boolean shareable = false;
+        int meeting_id = Object.getNextMeetingID();
+        Object.CreateMeeting(meeting_id, group_id, meeting_name, meeting_datetime, shareable);
+        int meeting_id2 = Object.getNextMeetingID();
+        Object.CreateMeeting(meeting_id2, group_id, meeting_name, meeting_datetime, shareable);
+        int[] storedMeetings = Object.getGroupMeetings(group_id);
+        try{
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+        }
+        catch(Exception e){
+            System.out.println("testAddGroupMember Error:\n    "+e);
+        }
+        assertEquals(meeting_id, storedMeetings[0]);
+        assertEquals(meeting_id2, storedMeetings[1]);
+    }
+    @Test public void testCreateMessage(){
+        int group_id = Object.nextGroupID();
+        int user_id = Object.getNextUserID();
+        String username = "test";
+        String password = "password";
+        String datecreated = "2024-02-11";
+        Object.AddUser(user_id, username, password, datecreated);
+        String group_name = "test";
+        Object.CreateGroup(group_id, group_name, user_id);
+        String meeting_name = "Test Meeting";
+        String meeting_datetime = "2024-03-03 12:47:32";
+        boolean shareable = false;
+        int meeting_id = Object.getNextMeetingID();
+        Object.CreateMeeting(meeting_id, group_id, meeting_name, meeting_datetime, shareable);
+        String message = "This is a test message that should not be bound by length in theory. Lets test that theory and see if this will fit.";
+        int message_id = Object.getNextMessageID(meeting_id);
+        String message_datetime = "2024-03-03 13:48:05";
+        boolean pinned = false;
+        Object.createMessage(user_id, meeting_id, message_id, message, message_datetime, pinned);
+        int storedUser=-1;
+        String storedMessage ="";
+        String stored_datetime="";
+        boolean stored_pinned = true;
+        try{
+            ResultSet results=Object.PCDatabase.createStatement().executeQuery("select * from messages where message_id="+message_id+" and meeting_id="+meeting_id);
+            results.next();
+            storedUser=results.getInt("user_id");
+            storedMessage = results.getString("Body");
+            stored_datetime = results.getString("created_at");
+            stored_pinned = results.getBoolean("pinned");
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+        }
+        catch(Exception e){
+            System.out.println("testAddGroupMember Error:\n    "+e);
+        }
+        assertEquals(user_id, storedUser);
+        assertEquals(message, storedMessage);
+        assertEquals(message_datetime, stored_datetime);
+        assertEquals(pinned, stored_pinned);
+    }
 }

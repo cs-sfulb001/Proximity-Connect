@@ -144,7 +144,7 @@ public class DatabaseQueries {
             else{
                 return null;
             }
-            ResultSet groups = PCDatabase.createStatement().executeQuery("select * from group_members where user_id="+user_id);
+            ResultSet groups = PCDatabase.createStatement().executeQuery("select group_id from group_members where user_id="+user_id);
             int i =0;
             while(groups.next()){
                 group_values[i]=groups.getInt("group_id");
@@ -167,7 +167,7 @@ public class DatabaseQueries {
             else{
                 return null;
             }
-            ResultSet Members = PCDatabase.createStatement().executeQuery("select * from group_members where group_id="+group_id);
+            ResultSet Members = PCDatabase.createStatement().executeQuery("select user_id from group_members where group_id="+group_id);
             int i =0;
             while(Members.next()){
                 members[i]=Members.getInt("user_id");
@@ -195,10 +195,55 @@ public class DatabaseQueries {
     }
     public void CreateMeeting(int meeting_id, int group_id, String meeting_name, String dateTime, boolean shareable){
         try{
-            PCDatabase.createStatement().execute("insert into group_meetings (meeting_id, group_id, meeting_name, meeting_date, shareable) values ("+meeting_id+", "+group_id+", \'"+meeting_name+"\', \'"+dateTime+"\', "+shareable+")");
+            PCDatabase.createStatement().execute("insert into group_meetings (group_id, meeting_id, meeting_name, meeting_date, shareable) values ("+group_id+", "+meeting_id+", \'"+meeting_name+"\', \'"+dateTime+"\', "+shareable+")");
         }
         catch(Exception e){
             System.out.println("CreateMeeting Error:\n    "+e);
+        }
+    }
+    public int[] getGroupMeetings(int group_id){
+        try{
+            ResultSet len = PCDatabase.createStatement().executeQuery("select count(meeting_id) from group_meetings where group_id="+group_id);
+            int meetings[];
+            if(len.next()){
+                meetings = new int[len.getInt(1)];
+            }
+            else{
+                return null;
+            }
+            ResultSet Meetings = PCDatabase.createStatement().executeQuery("select meeting_id from group_meetings where group_id="+group_id);
+            int i =0;
+            while(Meetings.next()){
+                meetings[i]=Meetings.getInt("meeting_id");
+                i++;
+            }
+            return meetings;
+        }
+        catch(Exception e){
+            System.out.println("getGroupMembers Error:\n    "+e);
+        }
+        return null;
+
+    }
+    public int getNextMessageID(int meeting_id){
+        try{
+            ResultSet results = PCDatabase.createStatement().executeQuery("select max(message_id) from messages where meeting_id="+meeting_id);
+            if(results.next())
+                return results.getInt(1) + 1;
+            else
+                return 1;
+        }
+        catch(Exception e){
+            System.out.println("getNextMessageID Error:\n    "+e);
+        }
+        return -1;
+    }
+    public void createMessage(int user_id, int meeting_id, int message_id, String message, String dateTime, boolean pinned){
+        try{
+            PCDatabase.createStatement().execute("insert into messages (user_id, meeting_id, message_id, body, created_at, pinned) values ("+user_id+", "+meeting_id+", "+message_id+", \'"+message+"\', \'"+dateTime+"\', "+pinned+")");
+        }
+        catch(Exception e){
+            System.out.println("CreateMessage Error:\n    "+e);
         }
     }
 }
