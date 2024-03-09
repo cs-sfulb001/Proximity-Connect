@@ -11,10 +11,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 public class TestDatabaseQueries {
-    static DatabaseQueries Object;
-    String username[], password[], datecreated[], group_name[], dateTime[], meeting_name[], message[];
+    static DatabaseQueries Object=new DatabaseQueries();
+    String username[], password[], date_created[], group_name[], dateTime[], meeting_name[], message[];
     @Before public void init(){
-        Object = new DatabaseQueries();
         username = new String[] {"test", "testUserName", "Pineapple"};
         password = new String[] {"password","1234", "OneTwoThree"};
         date_created = new String[] {"2024-02-11","2024-02-20","2024-03-09"};
@@ -56,7 +55,7 @@ public class TestDatabaseQueries {
          */
         //Create User
         int user_id = Object.getNextUserID();
-        Object.AddUser(user_id[0], username[0], password[0], datecreated[0]);
+        Object.AddUser(user_id, username[0], password[0], date_created[0]);
         /*
          * Verification
          */
@@ -90,9 +89,9 @@ public class TestDatabaseQueries {
             System.out.println("testAddUser Error:\n    "+e);
         }
         //Test for expected information with the userid (Would fail to create the user if the user_id is taken)
-        assertEquals(username, testUN);
-        assertEquals(password, testPW);
-        assertEquals(datecreated, testDate);
+        assertEquals(username[0], testUN);
+        assertEquals(password[0], testPW);
+        assertEquals(date_created[0], testDate);
         //Checking Default settings being created
         assertEquals("FirstName", defaultFName);
         assertEquals( "LastName", defaultLName);
@@ -236,9 +235,9 @@ public class TestDatabaseQueries {
     
     @Test public void testAddGroupMember(){
         int user_id = Object.getNextUserID();
-        Object.AddUser(user_id, username[0], password[0], datecreated[0]);
+        Object.AddUser(user_id, username[0], password[0], date_created[0]);
         int user_id2 = Object.getNextUserID();
-        Object.AddUser(user_id2, username[1], password[1], datecreated[1]);
+        Object.AddUser(user_id2, username[1], password[1], date_created[1]);
         int group_id = Object.nextGroupID();
         Object.CreateGroup(group_id, group_name[0], user_id);
         Object.addGroupMember(group_id, user_id2);
@@ -372,8 +371,8 @@ public class TestDatabaseQueries {
             System.out.println("testAddGroupMember Error:\n    "+e);
         }
         assertEquals(group_id, storedGroup);
-        assertEquals(meeting_name, storedMeeting_name);
-        assertEquals(meeting_datetime, storedMeeting_datetime);
+        assertEquals(meeting_name[0], storedMeeting_name);
+        assertEquals(dateTime[0], storedMeeting_datetime);
         assertEquals(shareable, storedShareable);
     }
     @Test public void testGetGroupMeetings(){
@@ -385,7 +384,7 @@ public class TestDatabaseQueries {
         Object.AddUser(user_id, username[0], password[0], date_created[0]);
         //Create Group
         int group_id = Object.nextGroupID();
-        Object.CreateGroup(group_id, group_name, user_id);
+        Object.CreateGroup(group_id, group_name[0], user_id);
         //Create Meetings
         boolean shareable = false;
         int meeting_id = Object.getNextMeetingID();
@@ -416,10 +415,10 @@ public class TestDatabaseQueries {
          */
         //Create User
         int user_id = Object.getNextUserID();
-        Object.AddUser(user_id, username, password, datecreated);
+        Object.AddUser(user_id, username[0], password[0], date_created[0]);
         //Create Group
         int group_id = Object.nextGroupID();
-        Object.CreateGroup(group_id, group_name, user_id);
+        Object.CreateGroup(group_id, group_name[0], user_id);
         //Create Meeting
         boolean shareable = false;
         int meeting_id = Object.getNextMeetingID();
@@ -448,8 +447,8 @@ public class TestDatabaseQueries {
             System.out.println("testAddGroupMember Error:\n    "+e);
         }
         assertEquals(user_id, storedUser);
-        assertEquals(message, storedMessage);
-        assertEquals(message_datetime, stored_datetime);
+        assertEquals(message[0], storedMessage);
+        assertEquals(dateTime[0], stored_datetime);
         assertEquals(pinned, stored_pinned);
     }
 }
