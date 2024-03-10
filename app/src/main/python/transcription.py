@@ -4,7 +4,7 @@ aai.settings.api_key = "353ff195df9d4243b247c2ecb4b80b46"
 
 USERNAME = "Brianna"
 
-clips = ["Ford", "Volvo", "BMW"]
+clips = ["url", "url", "url"]
 
 # URL of the file to transcribe
 FILE_URL = r"C:\Users\Brianna\Desktop\SeniorProject\Proximity-Connect\app\src\main\python\burger-king-foot-lettuce.mp3"
