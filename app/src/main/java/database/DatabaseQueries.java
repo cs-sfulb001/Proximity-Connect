@@ -407,7 +407,7 @@ public class DatabaseQueries {
      * @param message_id    the id of the message to be updated
      * @param pinned        the new pinned status for a message
      */
-    public void messageSetPinned(int meeting_id, message_id, boolean pinned){
+    public void messageSetPinned(int meeting_id, int message_id, boolean pinned){
         try{
             PCDatabase.createStatement().execute("update messages set pinned=\'"+pinned+"\' where meeting_id="+meeting_id+" and message_id="+message_id);
         }
@@ -437,9 +437,11 @@ public class DatabaseQueries {
                 messages[i]=pinnedMessages.getInt("message_id");
                 i++;
             }
+            return messages;
         }
         catch(Exception e){
             System.out.println("getPinnedMessages Error:\n    "+e);
         }
+        return null;
     }
 }
