@@ -3,10 +3,11 @@ import random
 from datetime import datetime
 
 class Message:
-    def __init__(username, message, time):
+    def __init__(self, username, message, time):
         self.username = username
         self.message = message
         self.time = time
+
     def __str__(self):
         return f"{self.time} {self.username}: {self.message} \n"
 
@@ -28,7 +29,7 @@ class Message:
 
 aai.settings.api_key = "353ff195df9d4243b247c2ecb4b80b46"
 
-USERNAME = "Brianna"
+username = "Brianna"
 
 clips = ["soundFiles/burger-king-foot-lettuce.mp3", "soundFiles/road-work-ahead-made-with-Voicemod.mp3"]
 
@@ -43,13 +44,14 @@ FILE_URL = randomFile
 transcriber = aai.Transcriber()
 transcript = transcriber.transcribe(FILE_URL)
 
+now = datetime.now()
+time = now.strftime("%H:%M:%S")
+message = transcript.text
+
+myMessage = Message(username, message, time)
+
 if transcript.status == aai.TranscriptStatus.error:
     print(transcript.error)
 else:
-    print(USERNAME + ": " + transcript.text)
+    print(myMessage)
 
-now = datetime.now()
-
-myMessage = Message(USERNAME, transcript.text, now.strftime("%H:%M:%S"))
-
-print(myMessage)
