@@ -3,7 +3,6 @@
  */
 
 package database;
-
 import java.sql.*;
 public class DatabaseQueries {
     Connection PCDatabase;
@@ -30,14 +29,16 @@ public class DatabaseQueries {
     /*
      * Adds a new user for to the database
      *  
-     * @param id an int that uniquely identifies the new user
-     * @param name the user name of the new user
-     * @param password the password the user will use to log in
-     * @param date the date the user was created formated "yyyy-mm-dd"
+     * @param id            an int that uniquely identifies the new user
+     * @param email         the users email that will be userd to login
+     * @param phonenumber   the users phone number to associate with the acount
+     * @param password      the password the user will use to login
+     * @param date the      date the user was created formated "yyyy-mm-dd"
      */
-    public void AddUser(int id, String name, String password, String Date){
+    public void AddUser(String email, String phonenumber, String username, String password, String Date){
+        int id = email.hashCode();
         try{
-            PCDatabase.createStatement().execute("insert into users (user_id, username, user_password, created_at) values("+id+", \'"+name+"\', \'"+password+"\', \'"+Date+"\')");
+            PCDatabase.createStatement().execute("insert into users (user_id, email, phonenumber, username, user_password, created_at) values("+id+", \'"+email+"\', \'"+phonenumber+"\', \'"+username+"\', \'"+password+"\', \'"+Date+"\')");
         }
         catch (Exception e){
             System.out.println("AddUser Error:\n    "+e);
@@ -45,6 +46,7 @@ public class DatabaseQueries {
         defaultSettings(id);
     }
     /*
+     * -------------------------Depericated---------------------------
      * Querries the database to find the next available ID for a User 
      * 
      * @return      the next avalible user_id as an int
@@ -69,14 +71,14 @@ public class DatabaseQueries {
      * @param password  the password associated with the userID
      * @return          the user_id if password matches the stored password or -1 on a failed login attempt
      */
-    public int Login(int userID, String password){
+    public int Login(String email, String password){
         try{
-            ResultSet results = PCDatabase.createStatement().executeQuery("select user_id from users where user_id="+userID+" and user_password=\'"+password+"\'");
+            ResultSet results = PCDatabase.createStatement().executeQuery("select user_id from users where email=\'"+email+"\' and user_password=\'"+password+"\'");
             if(results.next())
                 return results.getInt("user_id");
         }
         catch (Exception e){
-            System.out.println("GetNextID Error:\n    "+e);
+            System.out.println("Login Error:\n    "+e);
         }
         return -1;
     }

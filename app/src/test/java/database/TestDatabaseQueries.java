@@ -12,33 +12,34 @@ import static org.hamcrest.Matchers.*;
 
 public class TestDatabaseQueries {
     static DatabaseQueries Object=new DatabaseQueries();
-    String username[], password[], date_created[], group_name[], dateTime[], meeting_name[], message[];
+    String username[], password[], email[], phonenumber[], date_created[], group_name[], dateTime[], meeting_name[], message[];
+    int user_ids[];
     @Before public void init(){
         username = new String[] {"test", "testUserName", "Pineapple"};
         password = new String[] {"password","1234", "OneTwoThree"};
+        email = new String[]{"Testemail@gmail.com", "Fakeemail@hotmail.com", "Someonesemail@yahoo.com"};
+        phonenumber = new String[]{"(757) 213 3521", "(123) 456 7890", "(964) 456 1348"};
         date_created = new String[] {"2024-02-11","2024-02-20","2024-03-09"};
         group_name = new String[] {"testGroup", "GroupName", "The Best Group"};
         dateTime = new String[] {"2024-03-03 12:47:32","2024-03-03 13:48:05", "2024-03-09 02:53:53"};
         meeting_name = new String[] {"Test Meeting", "The Next Meeting", "The Worst Meeting"};
         message = new String[] {"This is a test message that should not be bound by length in theory. Lets test that theory and see if this will fit.", "Simple test message", "Test123"};
+        user_ids = new int[] {email[0].hashCode(), email[1].hashCode(), email[2].hashCode()};
     }
     /*
      * ---------------------------------------------------------------------------
      *                               User Tests
      * ---------------------------------------------------------------------------
      */
+    //Depericated
     @Test public void testNextUserID(){
         /*
-         * Setup
-         */
         //Gathering ID's
         assertThat(Object.getNextUserID(), is(not(equalTo(-1))));
-        int user_id = Object.getNextUserID();
-        Object.AddUser(user_id, username[0], password[0], date_created[0]); //To have getNextUserID() to generate a new id
+        Object.AddUser(email[0], phonenumber[0], username[0], password[0], date_created[0]);
+        Object.AddUser(email[1], phonenumber[1], username[1], password[1], date_created[1]);
+        Object.AddUser(email[2], phonenumber[2], username[2], password[2], date_created[2]);
         int nextID = Object.getNextUserID();
-        /*
-         * Verification
-         */
         try{
             Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
         }
@@ -46,6 +47,8 @@ public class TestDatabaseQueries {
             System.out.println("testNextUserID Error:\n    "+e);
         }
         assertEquals(user_id+1, nextID);
+        */
+        assert(true);
     }
     //Insure the user is created correctly
     @Test public void testAddUser(){
@@ -53,13 +56,13 @@ public class TestDatabaseQueries {
          * Setup
          */
         //Create User
-        int user_id = Object.getNextUserID();
-        Object.AddUser(user_id, username[0], password[0], date_created[0]);
+        Object.AddUser(email[0], phonenumber[0], username[0], password[0], date_created[0]);
         /*
          * Verification
          */
-        int TestID = -1;
+        int testID = -1;
         String testUN = "";
+        String testPhoneNumber = "";
         String testPW = "";
         String testDate = "";
         String defaultFName="";
@@ -69,12 +72,14 @@ public class TestDatabaseQueries {
         String defaultPP="";
         String defaultPrimaryLanguage="";
         try{
-            ResultSet newUser = Object.PCDatabase.createStatement().executeQuery("select * from users where user_id="+user_id);
+            ResultSet newUser = Object.PCDatabase.createStatement().executeQuery("select * from users where email=\'"+email[0]+"\'");
             newUser.next();
             testUN = newUser.getString("username");
             testPW = newUser.getString("user_password");
             testDate = newUser.getString("created_at");
-            ResultSet defaultSettings = Object.PCDatabase.createStatement().executeQuery("select * from user_settings where user_id="+user_id);
+            testID = newUser.getInt("user_id");
+            testPhoneNumber = newUser.getString("phonenumber");
+            ResultSet defaultSettings = Object.PCDatabase.createStatement().executeQuery("select * from user_settings where user_id="+testID);
             defaultSettings.next();
             defaultFName = defaultSettings.getString("first_name");
             defaultLName = defaultSettings.getString("last_name");
@@ -82,7 +87,7 @@ public class TestDatabaseQueries {
             defaultFont = defaultSettings.getString("UI_Font");
             defaultPP = defaultSettings.getString("profile_picture");
             defaultPrimaryLanguage = defaultSettings.getString("primary_language");
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[0]);
         }
         catch(Exception e){
             System.out.println("testAddUser Error:\n    "+e);
@@ -91,6 +96,7 @@ public class TestDatabaseQueries {
         assertEquals(username[0], testUN);
         assertEquals(password[0], testPW);
         assertEquals(date_created[0], testDate);
+        assertEquals(phonenumber[0], testPhoneNumber);
         //Checking Default settings being created
         assertEquals("FirstName", defaultFName);
         assertEquals( "LastName", defaultLName);
@@ -103,41 +109,37 @@ public class TestDatabaseQueries {
      *                User Functions
      */
     @Test public void testUpdatePassword(){
-        int user_id = Object.getNextUserID();
-        Object.AddUser(user_id, username[0], password[0], date_created[0]);
+        Object.AddUser(email[0], phonenumber[0], username[0], password[0], date_created[0]);
         String newpassword = "1234";
-        Object.updatePassword(user_id, password[0], password[1]);
+        Object.updatePassword(user_ids[0], password[0], password[1]);
         int TestID = -1;
         String testUN = "";
         String testPW = "";
         String testDate = "";
         try{
-            ResultSet newUser = Object.PCDatabase.createStatement().executeQuery("select * from users where user_id="+user_id);
+            ResultSet newUser = Object.PCDatabase.createStatement().executeQuery("select * from users where user_id="+user_ids[0]);
             newUser.next();
-            TestID = newUser.getInt("user_id");
             testUN = newUser.getString("username");
             testPW = newUser.getString("user_password");
             testDate = newUser.getString("created_at");
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[0]);
         }
         catch(Exception e){
             System.out.println("testUpdatePassword Error:\n    "+e);
         }
-        assertEquals(user_id, user_id);
         assertEquals(username[0], testUN);
         assertEquals(password[1], testPW);
         assertEquals(date_created[0], testDate);
     }
     @Test public void testUpdateUserSettings(){
-        int user_id = Object.getNextUserID();
-        Object.AddUser(user_id, username[0], password[0], date_created[0]);
+        Object.AddUser(email[0], phonenumber[0], username[0], password[0], date_created[0]);
         // No future tests depend on settings thus only needed here
         String newFName="Pine";
         String newLName="Apple";
         String newUIColor="(0, 255, 0)";
         String newFont="Comic Sans";
         String newPrimaryLanguage="Spanish";
-        Object.updateUserSettings(user_id, newUIColor, newFont, newFName, newLName, newPrimaryLanguage);
+        Object.updateUserSettings(user_ids[0], newUIColor, newFont, newFName, newLName, newPrimaryLanguage);
         String storedFName="";
         String storedLName="";
         String storedUIColor="";
@@ -145,7 +147,7 @@ public class TestDatabaseQueries {
         String storedPP="";
         String storedPrimaryLanguage="";
         try{
-            ResultSet Settings = Object.PCDatabase.createStatement().executeQuery("select * from user_settings where user_id="+user_id);
+            ResultSet Settings = Object.PCDatabase.createStatement().executeQuery("select * from user_settings where user_id="+user_ids[0]);
             Settings.next();
             storedFName = Settings.getString("first_name");
             storedLName = Settings.getString("last_name");
@@ -153,7 +155,7 @@ public class TestDatabaseQueries {
             storedFont = Settings.getString("UI_Font");
             storedPP = Settings.getString("profile_picture");
             storedPrimaryLanguage = Settings.getString("primary_language");
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[0]);
         }
         catch(Exception e){
             System.out.println("testUpdateUserSettings Error:\n    "+e);
@@ -167,9 +169,8 @@ public class TestDatabaseQueries {
     }
     //Make sure Usernames are unique?
     @Test public void testLogin(){
-        int user_id = Object.getNextUserID();
-        Object.AddUser(user_id, username[0], password[0], date_created[0]);
-        int loginID = Object.Login(user_id, password[0]);
+        Object.AddUser(email[0], phonenumber[0], username[0], password[0], date_created[0]);
+        int loginID = Object.Login(email[0], password[0]);
         String testUN = "";
         String testPW = "";
         String testDate = "";
@@ -179,12 +180,12 @@ public class TestDatabaseQueries {
             testUN = newUser.getString("username");
             testPW = newUser.getString("user_password");
             testDate = newUser.getString("created_at");
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[0]);
         }
         catch(Exception e){
             System.out.println("testLogin Error:\n    "+e);
         }
-        assertEquals(user_id, loginID);
+        assertEquals(user_ids[0], loginID);
         assertEquals(username[0], testUN);
         assertEquals(password[0], testPW);
         assertEquals(date_created[0], testDate);
@@ -197,12 +198,11 @@ public class TestDatabaseQueries {
     @Test public void testNextGroupID(){
         int group_id = Object.nextGroupID();
         assertThat(group_id, is(not(equalTo(-1))));
-        int user_id = Object.nextGroupID();
-        Object.AddUser(user_id, username[0], password[0], date_created[0]);
-        Object.CreateGroup(group_id, group_name[0], user_id);
+        Object.AddUser(email[0], phonenumber[0], username[0], password[0], date_created[0]);
+        Object.CreateGroup(group_id, group_name[0], user_ids[0]);
         int nextID = Object.nextGroupID();
         try{
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[0]);
         }
         catch(Exception e){
             System.out.println("testNextUserID Error:\n    "+e);
@@ -211,11 +211,9 @@ public class TestDatabaseQueries {
     }
     
     @Test public void testCreateGroup(){
+        Object.AddUser(email[0], phonenumber[0], username[0], password[0], date_created[0]);
         int group_id = Object.nextGroupID();
-        assertThat(group_id, is(not(equalTo(-1))));
-        int user_id = Object.getNextUserID();
-        Object.AddUser(user_id, username[0], password[0], date_created[0]);
-        Object.CreateGroup(group_id, group_name[0], user_id);
+        Object.CreateGroup(group_id, group_name[0], user_ids[0]);
         String Storedgroup_name = "";
         int group_Creator = -1;
         try{
@@ -223,28 +221,26 @@ public class TestDatabaseQueries {
             GroupQuery.next();
             Storedgroup_name=GroupQuery.getString("group_name");
             group_Creator=GroupQuery.getInt("group_creator");
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[0]);
         }
         catch(Exception e){
             System.out.println("testNextUserID Error:\n    "+e);
         }
         assertEquals(group_name[0], Storedgroup_name);
-        assertEquals(user_id, group_Creator);
+        assertEquals(user_ids[0], group_Creator);
     }
     
     @Test public void testAddGroupMember(){
-        int user_id = Object.getNextUserID();
-        Object.AddUser(user_id, username[0], password[0], date_created[0]);
-        int user_id2 = Object.getNextUserID();
-        Object.AddUser(user_id2, username[1], password[1], date_created[1]);
+        Object.AddUser(email[0], phonenumber[0], username[0], password[0], date_created[0]);
+        Object.AddUser(email[1], phonenumber[1], username[1], password[1], date_created[1]);
         int group_id = Object.nextGroupID();
-        Object.CreateGroup(group_id, group_name[0], user_id);
-        Object.addGroupMember(group_id, user_id2);
+        Object.CreateGroup(group_id, group_name[0], user_ids[0]);
+        Object.addGroupMember(group_id, user_ids[1]);
         int storedGroup=-1;
         int storedMember1=-1;
         int storedMember2=-1;
         try{
-            ResultSet Groups = Object.PCDatabase.createStatement().executeQuery("select * from user_group where group_creator="+user_id);
+            ResultSet Groups = Object.PCDatabase.createStatement().executeQuery("select * from user_group where group_creator="+user_ids[0]);
             Groups.next();
             storedGroup=Groups.getInt("group_id");
             ResultSet Members = Object.PCDatabase.createStatement().executeQuery("select * from group_members where group_id="+group_id);
@@ -252,43 +248,40 @@ public class TestDatabaseQueries {
             storedMember1=Members.getInt("user_id");
             Members.next();
             storedMember2=Members.getInt("user_id");
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id2);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[0]);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[1]);
         }
         catch(Exception e){
             System.out.println("testAddGroupMember Error:\n    "+e);
         }
         assertEquals(group_id, storedGroup);
-        assertEquals(user_id, storedMember1);
-        assertEquals(user_id2, storedMember2);
+        assertEquals(user_ids[0], storedMember1);
+        assertEquals(user_ids[1], storedMember2);
     }
     @Test public void testGetGroups(){
         /*
          * Setup
          */
         //Create Users
-        int user_id = Object.getNextUserID();
-        Object.AddUser(user_id, username[0], password[0], date_created[0]);
-        int user_id2 = Object.getNextUserID();
-        Object.AddUser(user_id2, username[1], password[1], date_created[1]);
-        int user_id3 = Object.getNextUserID();
-        Object.AddUser(user_id3, username[2], password[2], date_created[2]);
+        Object.AddUser(email[0], phonenumber[0], username[0], password[0], date_created[0]);
+        Object.AddUser(email[1], phonenumber[1], username[1], password[1], date_created[1]);
+        Object.AddUser(email[2], phonenumber[2], username[2], password[2], date_created[2]);
         int group_id = Object.nextGroupID();
         //Create Groups
-        Object.CreateGroup(group_id, group_name[0], user_id);
+        Object.CreateGroup(group_id, group_name[0], user_ids[0]);
         int group_id2 = Object.nextGroupID();
-        Object.CreateGroup(group_id2, group_name[1], user_id2);
+        Object.CreateGroup(group_id2, group_name[1], user_ids[1]);
         //Add members to groups
-        Object.addGroupMember(group_id, user_id3);
-        Object.addGroupMember(group_id2, user_id3);
+        Object.addGroupMember(group_id, user_ids[2]);
+        Object.addGroupMember(group_id2, user_ids[2]);
         /*
          * Verification
          */
-        int[] groups=Object.getGroups(user_id3);
+        int[] groups=Object.getGroups(user_ids[2]);
         try{
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id2);
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id3);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[0]);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[1]);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[2]);
         }
         catch(Exception e){
             System.out.println("testAddGroupMember Error:\n    "+e);
@@ -301,33 +294,37 @@ public class TestDatabaseQueries {
          * Setup
          */
         //Create Users
-        int user_id = Object.getNextUserID();
-        Object.AddUser(user_id, username[0], password[0], date_created[0]);
-        int user_id2 = Object.getNextUserID();
-        Object.AddUser(user_id2, username[1], password[1], date_created[1]);
-        int user_id3 = Object.getNextUserID();
-        Object.AddUser(user_id3, username[2], password[2], date_created[2]);
+        Object.AddUser(email[0], phonenumber[0], username[0], password[0], date_created[0]);
+        Object.AddUser(email[1], phonenumber[1], username[1], password[1], date_created[1]);
+        Object.AddUser(email[2], phonenumber[2], username[2], password[2], date_created[2]);
         //Create Group
         int group_id = Object.nextGroupID();
-        Object.CreateGroup(group_id, group_name[0], user_id);
+        Object.CreateGroup(group_id, group_name[0], user_ids[0]);
         //Add Members
-        Object.addGroupMember(group_id, user_id2);
-        Object.addGroupMember(group_id, user_id3);
+        Object.addGroupMember(group_id, user_ids[1]);
+        Object.addGroupMember(group_id, user_ids[2]);
         /*
          * Verification
          */
         int[] members=Object.getGroupMembers(group_id);
         try{
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id2);
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id3);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[0]);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[1]);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[2]);
         }
         catch(Exception e){
             System.out.println("testAddGroupMember Error:\n    "+e);
         }
-        assertEquals(user_id, members[0]);
-        assertEquals(user_id2, members[1]);
-        assertEquals(user_id3, members[2]);
+        for(int i=0;i<3;i++){
+            for(int j=0;j<3;j++){
+                if( user_ids[i]==members[j]){
+                    break;
+                }
+                else if(j==2){
+                    assert(false);
+                }
+            }
+        }
     }
     @Test public void testRemoveUserFromGroup(){
         
@@ -335,52 +332,49 @@ public class TestDatabaseQueries {
          * Setup
          */
         //Create Users
-        int user_id = Object.getNextUserID();
-        Object.AddUser(user_id, username[0], password[0], date_created[0]);
-        int user_id2 = Object.getNextUserID();
-        Object.AddUser(user_id2, username[1], password[1], date_created[1]);
-        int user_id3 = Object.getNextUserID();
-        Object.AddUser(user_id3, username[2], password[2], date_created[2]);
+        Object.AddUser(email[0], phonenumber[0], username[0], password[0], date_created[0]);
+        Object.AddUser(email[1], phonenumber[1], username[1], password[1], date_created[1]);
+        Object.AddUser(email[2], phonenumber[2], username[2], password[2], date_created[2]);
         //Create Group
         int group_id = Object.nextGroupID();
-        Object.CreateGroup(group_id, group_name[0], user_id);
+        Object.CreateGroup(group_id, group_name[0], user_ids[0]);
         //Add Members
-        Object.addGroupMember(group_id, user_id2);
-        Object.addGroupMember(group_id, user_id3);
+        Object.addGroupMember(group_id, user_ids[1]);
+        Object.addGroupMember(group_id, user_ids[2]);
         /*
          * Verification
          */
-        Object.removeUserFromGroup(group_id, user_id);
-        Object.removeUserFromGroup(group_id, user_id2);
+        Object.removeUserFromGroup(group_id, user_ids[0]);
+        Object.removeUserFromGroup(group_id, user_ids[1]);
         int[] members = Object.getGroupMembers(group_id);
         try{
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id2);
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id3);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[0]);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[1]);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[2]);
         }
         catch(Exception e){
             System.out.println("testRemoveGroupMember Error:\n    "+e);
         }
-        assertEquals(user_id, members[0]);
-        assertEquals(user_id3, members[1]);
+        if((user_ids[0]==members[0]||user_ids[0]==members[1])&&(user_ids[2]==members[0]||user_ids[2]==members[1]))
+            assert(true);
+        else
+            assert(false);
     }
     @Test public void testGetGroupName(){
         /*
          * Setup
          */
         //Create Users
-        int user_id = Object.getNextUserID();
-        Object.AddUser(user_id, username[0], password[0], date_created[0]);
-        int user_id2 = Object.getNextUserID();
+        Object.AddUser(email[0], phonenumber[0], username[0], password[0], date_created[0]);
         //Create Group
         int group_id = Object.nextGroupID();
-        Object.CreateGroup(group_id, group_name[0], user_id);
+        Object.CreateGroup(group_id, group_name[0], user_ids[0]);
         /*
          * Verification
          */
         String storedName = Object.getGroupName(group_id);
         try{
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[0]);
         }
         catch(Exception e){
             System.out.println("testGetGroupName Error:\n    "+e);
@@ -392,23 +386,21 @@ public class TestDatabaseQueries {
          * Setup
          */
         //Create Users
-        int user_id = Object.getNextUserID();
-        Object.AddUser(user_id, username[0], password[0], date_created[0]);
-        int user_id2 = Object.getNextUserID();
+        Object.AddUser(email[0], phonenumber[0], username[0], password[0], date_created[0]);
         //Create Group
         int group_id = Object.nextGroupID();
-        Object.CreateGroup(group_id, group_name[0], user_id);
+        Object.CreateGroup(group_id, group_name[0], user_ids[0]);
         /*
          * Verification
          */
         int group_creator = Object.getGroupCreator(group_id);
         try{
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[0]);
         }
         catch(Exception e){
             System.out.println("testGetGroupName Error:\n    "+e);
         }
-        assertEquals(user_id, group_creator);
+        assertEquals(user_ids[0], group_creator);
     }
     /*
      * ---------------------------------------------------------------------------
@@ -419,13 +411,11 @@ public class TestDatabaseQueries {
         /*
          * Setup
          */
+        //Create Users
+        Object.AddUser(email[0], phonenumber[0], username[0], password[0], date_created[0]);
         //Create Group
         int group_id = Object.nextGroupID();
-        assertThat(group_id, is(not(equalTo(-1))));
-        int user_id = Object.getNextUserID();
-        Object.AddUser(user_id, username[0], password[0], date_created[0]);
-        //Create Group
-        Object.CreateGroup(group_id, group_name[0], user_id);
+        Object.CreateGroup(group_id, group_name[0], user_ids[0]);
         //Create Meeting
         int meeting_id = Object.getNextMeetingID();
         boolean shareable = false;
@@ -444,7 +434,7 @@ public class TestDatabaseQueries {
             storedMeeting_name = meeting.getString("meeting_name");
             storedMeeting_datetime = meeting.getString("meeting_date");
             storedShareable = meeting.getBoolean("shareable");
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[0]);
         }
         catch(Exception e){
             System.out.println("testAddGroupMember Error:\n    "+e);
@@ -459,11 +449,10 @@ public class TestDatabaseQueries {
          * Setup
          */
         //Create User
-        int user_id = Object.getNextUserID();
-        Object.AddUser(user_id, username[0], password[0], date_created[0]);
+        Object.AddUser(email[0], phonenumber[0], username[0], password[0], date_created[0]);
         //Create Group
         int group_id = Object.nextGroupID();
-        Object.CreateGroup(group_id, group_name[0], user_id);
+        Object.CreateGroup(group_id, group_name[0], user_ids[0]);
         //Create Meetings
         boolean shareable = false;
         int meeting_id = Object.getNextMeetingID();
@@ -475,7 +464,7 @@ public class TestDatabaseQueries {
          */
         int[] storedMeetings = Object.getGroupMeetings(group_id);
         try{
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[0]);
         }
         catch(Exception e){
             System.out.println("testAddGroupMember Error:\n    "+e);
@@ -493,11 +482,10 @@ public class TestDatabaseQueries {
          * Setup
          */
         //Create User
-        int user_id = Object.getNextUserID();
-        Object.AddUser(user_id, username[0], password[0], date_created[0]);
+        Object.AddUser(email[0], phonenumber[0], username[0], password[0], date_created[0]);
         //Create Group
         int group_id = Object.nextGroupID();
-        Object.CreateGroup(group_id, group_name[0], user_id);
+        Object.CreateGroup(group_id, group_name[0], user_ids[0]);
         //Create Meeting
         boolean shareable = false;
         int meeting_id = Object.getNextMeetingID();
@@ -505,7 +493,7 @@ public class TestDatabaseQueries {
         //Create Message
         int message_id = Object.getNextMessageID(meeting_id);
         boolean pinned = false;
-        Object.createMessage(user_id, meeting_id, message_id, message[0], dateTime[0], pinned);
+        Object.createMessage(user_ids[0], meeting_id, message_id, message[0], dateTime[0], pinned);
         /*
          * Verification
          */
@@ -520,12 +508,12 @@ public class TestDatabaseQueries {
             storedMessage = results.getString("Body");
             stored_datetime = results.getString("created_at");
             stored_pinned = results.getBoolean("pinned");
-            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_id);
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[0]);
         }
         catch(Exception e){
             System.out.println("testAddGroupMember Error:\n    "+e);
         }
-        assertEquals(user_id, storedUser);
+        assertEquals(user_ids[0], storedUser);
         assertEquals(message[0], storedMessage);
         assertEquals(dateTime[0], stored_datetime);
         assertEquals(pinned, stored_pinned);
