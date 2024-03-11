@@ -67,7 +67,7 @@ public class DatabaseQueries {
     /*
      * Querries the database to validate login information
      *  
-     * @param userID    the id of the user trying to login
+     * @param email     the email of the user trying to login
      * @param password  the password associated with the userID
      * @return          the user_id if password matches the stored password or -1 on a failed login attempt
      */
