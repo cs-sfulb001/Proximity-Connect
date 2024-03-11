@@ -3,10 +3,11 @@ import random
 from datetime import datetime
 
 class Message:
-    def __init__(self, username, message, time):
+    def __init__(self, username, message, time, pinned):
         self.username = username
         self.message = message
         self.time = time
+        self.pinned = pinned
 
     def __str__(self):
         return f"{self.time} {self.username}: {self.message} \n"
@@ -23,6 +24,10 @@ class Message:
         self.time = newTime
     def getTime(self):
         return self.time
+    def setPinned(self, pin):
+        self.pinned = pin
+    def getPinned(self):
+        return self.pinned
 
 
 
@@ -48,7 +53,7 @@ now = datetime.now()
 time = now.strftime("%H:%M:%S")
 message = transcript.text
 
-myMessage = Message(username, message, time)
+myMessage = Message(username, message, time, False)
 
 if transcript.status == aai.TranscriptStatus.error:
     print(transcript.error)
