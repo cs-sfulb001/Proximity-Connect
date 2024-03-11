@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screenblack"
+    tools:context=".SignUp">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/logo2"
+                android:layout_width="291dp"
+                android:layout_height="177dp"
+                android:layout_marginStart="65dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="55dp"
+                app:srcCompat="@drawable/proximityconnectlogo" />
+
+            <TextView
+                android:id="@+id/titlee2"
+                android:layout_width="354dp"
+                android:layout_height="94dp"
+                android:layout_marginStart="27dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="77dp"
+                android:fontFamily="@font/sourcesanblack"
+                android:text="Proximity Connect Sign Up"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="34sp" />
+
+            <EditText
+                android:id="@+id/enterTextEmail"
+                android:layout_width="298dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="55dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/lightblackbtnborder"
+                android:ems="10"
+                android:hint="Enter Email"
+                android:inputType="textEmailAddress"
+                android:padding="20dp"
+                android:textColor="@color/insidetext"
+                android:textColorHint="@color/insidetext" />
+
+            <EditText
+                android:id="@+id/enterTextPhone"
+                android:layout_width="298dp"
+                android:layout_height="61dp"
+                android:layout_marginStart="55dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/lightblackbtnborder"
+                android:ems="10"
+                android:hint="Enter Phone Number"
+                android:inputType="phone"
+                android:padding="20dp"
+                android:textColorHint="@color/insidetext" />
+
+
+            <EditText
+                android:id="@+id/editTextTextPassword"
+                android:layout_width="298dp"
+                android:layout_height="61dp"
+                android:layout_marginStart="55dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/lightblackbtnborder"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:hint="Create Password"
+                android:padding="20dp"
+                android:textColorHint="@color/insidetext"/>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="294dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="55dp"
+                android:layout_marginTop="1dp"
+                android:text="Passwords Require atleast 1 uppercase character, 1 number, and  1special symbols"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/editTextretypePassword"
+                android:layout_width="298dp"
+                android:layout_height="61dp"
+                android:layout_marginStart="55dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/lightblackbtnborder"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:hint="Re-Type Password"
+                android:padding="20dp"
+                android:textColorHint="@color/insidetext"/>
+
+            <CheckBox
+                android:id="@+id/checkboxnotis"
+                android:layout_width="422dp"
+                android:layout_height="69dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="24dp"
+                android:buttonTint="@color/lightblack"
+                android:text="Check box to receive emails and text notifications"
+                android:textColor="@color/white" />
+
+            <CheckBox
+                android:id="@+id/checkboxTerms"
+                android:layout_width="429dp"
+                android:layout_height="68dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="24dp"
+                android:buttonTint="@color/lightblack"
+                android:text="I have read and agreed to Terms and Conditions "
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/SigningIN"
+                android:layout_width="350dp"
+                android:layout_height="61dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/lightblackbtnborder"
+                android:backgroundTint="@color/lightblack"
+                android:backgroundTintMode="add"
+                android:fontFamily="@font/sourcesanblack"
+                android:text="Sign In"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.533"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/conttt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/lightblackbtnborder"
+                android:fontFamily="@font/sourcesanblack"
+                android:text="Continue as guest"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+                <Button
+                    android:id="@+id/log"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/lightblackbtnborder"
+                    android:fontFamily="@font/sourcesanblack"
+                    android:text="Log In"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>
