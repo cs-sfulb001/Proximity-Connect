@@ -29,14 +29,11 @@ class Message:
     def getPinned(self):
         return self.pinned
 
-
-
-
 aai.settings.api_key = "353ff195df9d4243b247c2ecb4b80b46"
 
 username = "Brianna"
 
-clips = ["soundFiles/burger-king-foot-lettuce.mp3", "soundFiles/road-work-ahead-made-with-Voicemod.mp3"]
+clips = ["soundFiles/burger-king-foot-lettuce.mp3", "soundFiles/road-work-ahead-made-with-Voicemod.mp3", "soundFiles/no-pomegranates.mp3"]
 
 randomFile = random.choice(clips)
 
@@ -54,6 +51,10 @@ time = now.strftime("%H:%M:%S")
 message = transcript.text
 
 myMessage = Message(username, message, time, False)
+
+f = open("outBoundMessage.txt", "a")
+f.write(myMessage.__str__() + "\n")
+f.close()
 
 if transcript.status == aai.TranscriptStatus.error:
     print(transcript.error)
