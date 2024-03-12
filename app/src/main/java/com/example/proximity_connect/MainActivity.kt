@@ -28,14 +28,14 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     // Creates List of Devices Found by scanner
-                    NavigationView(listOf(ScannerDestination))
-                    //Greeting("Android")
+                    //NavigationView(listOf(ScannerDestination))
+                    Greeting("Android")
                 }
             }
         }
     }
 }
-/*
+
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
@@ -51,4 +51,3 @@ fun GreetingPreview() {
         Greeting("Android")
     }
 }
-*/
