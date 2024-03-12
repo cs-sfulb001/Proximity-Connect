@@ -12,4 +12,10 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+    
+    <color name="purple">#8692f7</color>
+    <color name="lightblack">#323232</color>
+    <color name="screenblack">#161616</color>
+    <color name="buttonred">#ff3b30</color>
+    <color name="indicatoryellow">#FFEEAA</color>
 </resources>
