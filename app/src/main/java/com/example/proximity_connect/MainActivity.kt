@@ -22,19 +22,38 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
    // Changed from: private var button: Button? = null
-    private lateinit var button: Button
+    private lateinit var button1: Button
+    private lateinit var button2: Button
+    private lateinit var button3: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-        button = findViewById<Button>(R.id.log)
-        button.setOnClickListener(View.OnClickListener { openActivityLoginPage() })
+
+        button1 = findViewById<Button>(R.id.log)
+        button1!!.setOnClickListener { openActivityLoginPage() }
+        button2 = findViewById<Button>(R.id.join)
+        button2!!.setOnClickListener { openActivitySignPage() }
+        button3 = findViewById<Button>(R.id.cont)
+        button3!!.setOnClickListener { openGuessbyass() }
     }
 
+
     fun openActivityLoginPage() {
-        val intent = Intent(this, loginPage::class.java)
+        val intent: Intent = Intent(this, loginPage::class.java)
         startActivity(intent)
     }
+
+    fun openActivitySignPage() {
+        val intent: Intent = Intent(this, SignUp::class.java)
+        startActivity(intent)
+    }
+
+    fun openGuessbyass() {
+        val intent: Intent = Intent(this, homeMain::class.java)
+        startActivity(intent)
+    }
+
 }
 
 /* Bluetooth stuff to work on elsewhere

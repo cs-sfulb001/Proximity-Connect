@@ -20,8 +20,8 @@
 
     <TextView
         android:id="@+id/titlee"
-        android:layout_width="408dp"
-        android:layout_height="105dp"
+        android:layout_width="398dp"
+        android:layout_height="41dp"
         android:layout_marginTop="228dp"
         android:fontFamily="@font/sourcesanblack"
         android:text="Proximity Connect"
@@ -35,8 +35,8 @@
 
     <TextView
         android:id="@+id/undertxt"
-        android:layout_width="408dp"
-        android:layout_height="105dp"
+        android:layout_width="395dp"
+        android:layout_height="43dp"
         android:layout_marginTop="270dp"
         android:fontFamily="@font/sourcesanblack"
         android:text="Capture and store your meeting transcriptions!"
@@ -95,7 +95,7 @@
         android:fontFamily="@font/sourcesanblack"
         android:text="Log In"
         android:textColor="@color/white"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.533"
