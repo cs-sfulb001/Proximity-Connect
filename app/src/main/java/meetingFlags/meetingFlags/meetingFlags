@@ -1,0 +1,82 @@
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.clickable
+import androidx.compose.ui.verticalScroll
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
+// Define data class representing each entry in the transcript
+data class TranscriptEntry(val timestamp: Long, val sentence: String, val flagTimestamp: Long? = null)
+
+// Define object to handle timestamp formatting
+object TimestampHandler {
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+
+    // Function format timestamp
+    fun formatTimestamp(timestamp: Long): String {
+        val date = Date(timestamp)
+        return dateFormat.format(date)
+    }
+
+    // Function to format meeting flag timestamp
+    fun formatMeetingFlagTimestamp(timestamp: Long): String {
+        val date = Date(timestamp)
+        return dateFormat.format(date)
+    }
+
+    // Function to search for meeting flags
+    fun searchMeetingFlags(transcript: List<TranscriptEntry>): List<TranscriptEntry> {
+        return transcript.filter { it.sentence.contains("[FLAG]", ignoreCase = true) }
+    }
+}
+
+// Composable function to display transcript entry
+@Composable
+fun TranscriptEntryWithTimestampAndFlag(entry: TranscriptEntry) {
+    Row {
+        Text(text = "${TimestampHandler.formatTimestamp(entry.timestamp)}: ${entry.sentence} ${if (entry.flagTimestamp != null) "[FLAG]" else ""}")
+    }
+}
+
+// Composable function display the transcript
+@Composable
+fun TranscriptWithTimestampsAndFlags(transcript: List<TranscriptEntry>) {
+    transcript.forEach { entry ->
+        TranscriptEntryWithTimestampAndFlag(entry = entry)
+    }
+}
+
+@Composable
+fun MeetingFlagText(
+    transcriptEntry: TranscriptEntry,
+    modifier: Modifier = Modifier,
+    onMeetingFlagAdded: (TranscriptEntry, Long) -> Unit
+) {
+    Row(modifier = modifier.verticalScroll()) {
+        Text(
+            text = transcriptEntry.sentence,
+            modifier = modifier,
+        )
+        Text(
+            text = "Flag Timestamp: ${
+                if (transcriptEntry.flagTimestamp != null)
+                    TimestampHandler.formatMeetingFlagTimestamp(transcriptEntry.flagTimestamp)
+                else "No Flag"
+            }",
+            modifier = modifier,
+        )
+        if (transcriptEntry.flagTimestamp == null) {
+            Text(
+                text = "Add Meeting Flag",
+                modifier = modifier.clickable {
+                    // Simulate add meeting flag to current transcript entry
+                    val currentTimeMillis = System.currentTimeMillis()
+                    onMeetingFlagAdded(transcriptEntry, currentTimeMillis)
+                }
+            )
+        }
+    }
+}
