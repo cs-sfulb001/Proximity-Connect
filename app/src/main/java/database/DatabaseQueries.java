@@ -400,4 +400,51 @@ public class DatabaseQueries {
             System.out.println("CreateMessage Error:\n    "+e);
         }
     }
+<<<<<<< HEAD
+=======
+    /*
+     * Updates the pinned entry for a message inside the database
+     * 
+     * @param meeting_id    the id of the meeting the message belongs to
+     * @param message_id    the id of the message to be updated
+     * @param pinned        the new pinned status for a message
+     */
+    public void messageSetPinned(int meeting_id, int message_id, boolean pinned){
+        try{
+            PCDatabase.createStatement().execute("update messages set pinned=\'"+pinned+"\' where meeting_id="+meeting_id+" and message_id="+message_id);
+        }
+        catch(Exception e){
+            System.out.println("messageSetPinned Error:\n    "+e);
+        }
+    }
+    /*
+     * Returns an int[] of the pinned messages within a meeting
+     * 
+     * @param meeting_id    the id of the meeting to search
+     * @return              the messages of the meeting where pinned is true
+     */
+    public int[] getPinnedMessages(int meeting_id){
+        try{
+            ResultSet len = PCDatabase.createStatement().executeQuery("select count(message_id) from messages where pinned='true' and meeting_id="+meeting_id);
+            int messages[];
+            if(len.next()){
+                messages = new int[len.getInt(1)];
+            }
+            else{
+                return null;
+            }
+            ResultSet pinnedMessages = PCDatabase.createStatement().executeQuery("select message_id from messages where pinned='true' and meeting_id="+meeting_id);
+            int i=0;
+            while(pinnedMessages.next()){
+                messages[i]=pinnedMessages.getInt("message_id");
+                i++;
+            }
+            return messages;
+        }
+        catch(Exception e){
+            System.out.println("getPinnedMessages Error:\n    "+e);
+        }
+        return null;
+    }
+>>>>>>> 0fdb45655527abd588bf4de80e0f4f09630d9d73
 }

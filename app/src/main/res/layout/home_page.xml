@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/screenblack"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <!--Proximity Connect-->
+        <EditText
+            android:id="@+id/editTextText"
+            android:layout_width="172dp"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="40dp"
+            android:background="@color/screenblack"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Proximity Connect"
+            android:textColor="#FFFFFFFF"
+            android:textSize="20sp"
+            />
+
+        <!--Settings-->
+        <ImageButton
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="265dp"
+            android:layout_marginTop="150dp"
+            android:background="@drawable/settingsbutton"
+            android:contentDescription="NULL"/>
+
+        <!--Profile-->
+        <ImageButton
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="265dp"
+            android:layout_marginTop="580dp"
+            android:background="@drawable/profile_button"
+            android:contentDescription="NULL"/>
+
+        <!--Transcription-->
+        <ImageButton
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="65dp"
+            android:layout_marginTop="430dp"
+            android:background="@drawable/transcriptionbutton"
+            android:contentDescription="NULL"/>
+
+        <!--Home-->
+        <ImageButton
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="265dp"
+            android:layout_marginTop="430dp"
+            android:background="@drawable/home_button"
+            android:contentDescription="NULL"/>
+
+        <!--Friends-->
+        <ImageButton
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="65dp"
+            android:layout_marginTop="580dp"
+            android:background="@drawable/friends_tab"
+            android:contentDescription="NULL"/>
+
+
+        <EditText
+            android:id="@+id/editTextText2"
+            android:layout_width="172dp"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="259dp"
+            android:background="@color/screenblack"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Start Meeting"
+            android:textColor="#FFFFFFFF"
+            android:textSize="20sp" />
+
+        <!--Start Meeting-->
+        <ImageButton
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="65dp"
+            android:layout_marginTop="300dp"
+            android:background="@drawable/start_meeting"
+            android:contentDescription="NULL"/>
+
+        <EditText
+            android:id="@+id/editTextText3"
+            android:layout_width="172dp"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="240dp"
+            android:layout_marginTop="261dp"
+            android:background="@color/screenblack"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Join Meeting"
+            android:textColor="#FFFFFFFF"
+            android:textSize="20sp" />
+
+        <!--Join Meeting-->
+        <ImageButton
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="265dp"
+            android:layout_marginTop="300dp"
+            android:background="@drawable/join_meeting"
+            android:contentDescription="NULL"/>
+
+
+        <!--Proximity Logo-->
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="144dp"
+            android:layout_height="279dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="19dp"
+            app:srcCompat="@drawable/proximity_logo" />
+
+        <EditText
+            android:id="@+id/editTextText6"
+            android:layout_width="189dp"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="381dp"
+            android:background="@color/screenblack"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Saved Transcriptions"
+            android:textColor="#FFFFFFFF"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/editTextText7"
+            android:layout_width="172dp"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="270dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="380dp"
+            android:background="@color/screenblack"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Home"
+            android:textColor="#FFFFFFFF"
+            android:textSize="20sp"/>
+
+        <EditText
+            android:id="@+id/editTextText11"
+            android:layout_width="172dp"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="530dp"
+            android:background="@color/screenblack"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Join Groups"
+            android:textColor="#FFFFFFFF"
+            android:textSize="20sp"/>
+
+        <EditText
+            android:id="@+id/editTextText10"
+            android:layout_width="172dp"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="270dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="530dp"
+            android:background="@color/screenblack"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Profile"
+            android:textColor="#FFFFFFFF"
+            android:textSize="20sp"/>
+
+        <EditText
+            android:id="@+id/editTextText15"
+            android:layout_width="172dp"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="260dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="100dp"
+            android:background="@color/screenblack"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Settings"
+            android:textColor="#FFFFFFFF"
+            android:textSize="20sp"/>
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

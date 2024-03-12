@@ -1,4 +1,8 @@
 *.iml
+<<<<<<< HEAD
+=======
+/.tmp
+>>>>>>> 0fdb45655527abd588bf4de80e0f4f09630d9d73
 .gradle
 /local.properties
 /.idea/caches
