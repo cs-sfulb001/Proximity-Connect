@@ -26,7 +26,7 @@ fun main() {
 
     // Sample conversation
     val sampleConversation = listOf(
-        "Student 1: Hey, have you all decided on which programming language to use for our project?",
+        "Student 1: Have you all decided on which programming language to use for our project?",
         "Student 2: Not yet. I'm still leaning towards Kotlin.",
         "Student 3: Really? I thought Java would be a better choiceconsidering our team's familiarity with it.",
         "Student 1: That's a valid point. Kotlin does offer some advantages, though.",
