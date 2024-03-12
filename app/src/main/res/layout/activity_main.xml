@@ -4,25 +4,89 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/screenblack"
     tools:context=".MainActivity">
 
+
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="312dp"
+        android:fontFamily="@font/sourcesanblack"
+        android:text=" Welcome to  Proximity Connect"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="131dp"
-        android:layout_height="94dp"
-        android:text="Test view"
+        android:layout_width="wrap_content"
+        android:layout_height="106dp"
+        android:fontFamily="@font/sourcesanblack"
+        android:text="Proximity Connect is the ultimate voice-capturing app. To keep conversations collected and organized"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.085" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="317dp"
+        android:layout_height="265dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.186" />
+        app:srcCompat="@drawable/proximityconnectlogo" />
+
+    <Button
+        android:id="@+id/log"
+        android:layout_width="157dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginBottom="90dp"
+        android:background="@drawable/lightblackbtnborder"
+        android:fontFamily="@font/sourcesanblack"
+        android:text="Log In"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/join"
+        android:layout_width="157dp"
+        android:layout_height="68dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="90dp"
+        android:background="@drawable/lightblackbtnborder"
+        android:fontFamily="@font/sourcesanblack"
+        android:text="Join Now"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/cont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:background="@color/screenblack"
+        android:fontFamily="@font/sourcesanblack"
+        android:text="Continue as guest"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
