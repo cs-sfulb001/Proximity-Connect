@@ -1,25 +1,43 @@
 package com.example.proximity_connect
 
+// Imports from cmilroy
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.proximity_connect.ui.theme.ProximityConnectTheme
 
+// imports from Khama
+import android.content.Intent
+import android.view.View
+import android.widget.Button
+
 // Nordic imports
 import dagger.hilt.android.AndroidEntryPoint
-import no.nordicsemi.android.common.navigation.NavigationView
 
+
+//  Khama: class MainActivity : AppCompatActivity() {
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+   // Changed from: private var button: Button? = null
+    private lateinit var button: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setContentView(R.layout.activity_main)
+        button = findViewById<Button>(R.id.log)
+        button.setOnClickListener(View.OnClickListener { openActivityLoginPage() })
+    }
+
+    fun openActivityLoginPage() {
+        val intent = Intent(this, loginPage::class.java)
+        startActivity(intent)
+    }
+}
+
+/* Bluetooth stuff to work on elsewhere
         setContent {
             ProximityConnectTheme {
                 // A surface container using the 'background' color from the theme
@@ -33,9 +51,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
+*/
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(

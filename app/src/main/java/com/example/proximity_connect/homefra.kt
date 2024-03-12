@@ -1,4 +1,4 @@
-package com.example.rightnow
+package com.example.proximity_connect
 
 import android.os.Bundle
 import android.view.LayoutInflater
