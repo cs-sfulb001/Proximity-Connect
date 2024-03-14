@@ -2,19 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/ibluto"
+        android:icon="@drawable/baseline_bluetooth_24"
+        android:title="Bluetooth"/>
+    <item
+        android:id="@+id/itrans"
+        android:icon="@mipmap/transcribe_foreground"
+        android:title="Transcribes" />
+    <item
         android:id="@+id/ihome"
         android:title="Home"
         android:icon="@mipmap/homepic_foreground"/>
-
-    <item
-        android:id="@+id/ibluto"
-        android:title="Bluetooth"
-        android:icon="@mipmap/bluetooth_foreground"/>
-
-    <item
-        android:id="@+id/itrans"
-        android:title="Transcribes"
-        android:icon="@mipmap/transcribe_foreground"/>
 
     <item
         android:id="@+id/igroup"
