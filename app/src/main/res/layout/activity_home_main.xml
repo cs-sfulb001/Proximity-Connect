@@ -73,7 +73,7 @@
             android:layout_weight="1"
             android:background="@drawable/lightblackbordersquare"
             android:contentDescription="Calendar"
-            android:src="@mipmap/calendar_foreground"
+            android:src="@mipmap/calendar_foreground" />
 
 
     </LinearLayout>
