@@ -400,8 +400,6 @@ public class DatabaseQueries {
             System.out.println("CreateMessage Error:\n    "+e);
         }
     }
-<<<<<<< HEAD
-=======
     /*
      * Updates the pinned entry for a message inside the database
      * 
@@ -446,5 +444,4 @@ public class DatabaseQueries {
         }
         return null;
     }
->>>>>>> 0fdb45655527abd588bf4de80e0f4f09630d9d73
 }
