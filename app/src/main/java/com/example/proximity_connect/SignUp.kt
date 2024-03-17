@@ -13,11 +13,11 @@ class SignUp : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
         button4 = findViewById<Button>(R.id.SigningIN)
-        button4!!.setOnClickListener { openActivityhomePage() }
+        button4.setOnClickListener { openActivityhomePage() }
         button5 = findViewById<Button>(R.id.conttt)
-        button5!!.setOnClickListener { openActivitybypassPage() }
+        button5.setOnClickListener { openActivitybypassPage() }
         button6 = findViewById<Button>(R.id.log)
-        button6!!.setOnClickListener { openActivityjoinPage() }
+        button6.setOnClickListener { openActivityjoinPage() }
     }
 
     fun openActivityhomePage() {

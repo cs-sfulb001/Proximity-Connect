@@ -12,6 +12,7 @@
         <item name="colorOnSecondary">#FFFFFFFF</item>
         <item name="android:statusBarColor" >?attr/colorSecondaryVariant</item>
 
+
     </style>
 
     <style name="nightModeSwitch" parent="Theme.AppCompat.Light">

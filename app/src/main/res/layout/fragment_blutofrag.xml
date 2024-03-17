@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/homefrags"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/screenblack"
-    tools:context=".homefra">
-<!--    tools:context="com.example.proximityconnectloginpageattempt3.homefra">-->
+    tools:context=".blutofrag">
 
     <!-- TODO: Update blank fragment layout -->
-
-
     <TextView
         android:id="@+id/titlee2"
         android:layout_width="354dp"
@@ -19,7 +15,7 @@
         android:layout_marginTop="25dp"
         android:layout_marginEnd="77dp"
         android:fontFamily="@font/sourcesanblack"
-        android:text="Home"
+        android:text="Bluetooth"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="34sp" />

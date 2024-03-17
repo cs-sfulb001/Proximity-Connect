@@ -31,11 +31,11 @@ class MainActivity : ComponentActivity() {
         setContentView(R.layout.activity_main)
 
         button1 = findViewById<Button>(R.id.log)
-        button1!!.setOnClickListener { openActivityLoginPage() }
+        button1.setOnClickListener { openActivityLoginPage() }
         button2 = findViewById<Button>(R.id.join)
-        button2!!.setOnClickListener { openActivitySignPage() }
+        button2.setOnClickListener { openActivitySignPage() }
         button3 = findViewById<Button>(R.id.cont)
-        button3!!.setOnClickListener { openGuessbyass() }
+        button3.setOnClickListener { openGuessbyass() }
     }
 
 

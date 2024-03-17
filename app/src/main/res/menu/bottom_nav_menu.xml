@@ -7,20 +7,20 @@
         android:title="Bluetooth"/>
     <item
         android:id="@+id/itrans"
-        android:icon="@mipmap/transcribe_foreground"
+        android:icon="@drawable/baseline_feed_24"
         android:title="Transcribes" />
     <item
         android:id="@+id/ihome"
         android:title="Home"
-        android:icon="@mipmap/homepic_foreground"/>
+        android:icon="@drawable/baseline_home_24"/>
 
     <item
         android:id="@+id/igroup"
         android:title="Groups"
-        android:icon="@mipmap/grouppic_foreground"/>
+        android:icon="@drawable/baseline_group_24"/>
 
     <item
         android:id="@+id/iCalen"
         android:title="Calendar"
-        android:icon="@mipmap/calendar_foreground"/>
+        android:icon="@drawable/baseline_calendar_today_24"/>
 </menu>
