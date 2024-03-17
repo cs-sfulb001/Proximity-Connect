@@ -94,7 +94,6 @@ dependencies {
     implementation("no.nordicsemi.android.kotlin.ble:uiscanner:1.0.15")
     implementation("no.nordicsemi.android.common:theme:1.9.4")
     implementation("androidx.activity:activity:1.9.0-alpha03")
-    implementation("androidx.activity:activity:1.9.0-alpha03")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")

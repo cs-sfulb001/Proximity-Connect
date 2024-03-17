@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
+<<<<<<< HEAD
+=======
     ~ Copyright (c) 2022, Nordic Semiconductor
     ~ All rights reserved.
     ~
@@ -30,6 +32,7 @@
     -->
 
 <!--
+>>>>>>> 0fdb45655527abd588bf4de80e0f4f09630d9d73
    Sample backup rules file; uncomment and customize as necessary.
    See https://developer.android.com/guide/topics/data/autobackup
    for details.
