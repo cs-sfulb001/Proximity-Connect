@@ -7,11 +7,7 @@ class Message:
         self.username = username
         self.message = message
         self.time = time
-<<<<<<< HEAD:app/src/main/python/transcription.py
-        self.pinned = pinned
-=======
         self.flags = []
->>>>>>> 0fdb45655527abd588bf4de80e0f4f09630d9d73:app/src/main/java/meetingFlags/meetingFlags/transcriptionwithflags.py
 
     def __str__(self):
         return f"{self.time} {self.username}: {self.message} {'Flags: ' + ', '.join(self.flags) if self.flags else ''}\n"
@@ -33,12 +29,6 @@ class Message:
 
     def getTime(self):
         return self.time
-<<<<<<< HEAD:app/src/main/python/transcription.py
-    def setPinned(self, pin):
-        self.pinned = pin
-    def getPinned(self):
-        return self.pinned
-=======
 
     def addFlag(self, flag):
         self.flags.append(flag)
@@ -46,7 +36,6 @@ class Message:
 def searchFlags(messages, flag):
     flagged_messages = [msg for msg in messages if flag in msg.flags]
     return flagged_messages
->>>>>>> 0fdb45655527abd588bf4de80e0f4f09630d9d73:app/src/main/java/meetingFlags/meetingFlags/transcriptionwithflags.py
 
 aai.settings.api_key = "353ff195df9d4243b247c2ecb4b80b46"
 
@@ -61,25 +50,11 @@ FILE_URL = randomFile
 transcriber = aai.Transcriber()
 transcript = transcriber.transcribe(FILE_URL)
 
-<<<<<<< HEAD:app/src/main/python/transcription.py
 now = datetime.now()
 time = now.strftime("%H:%M:%S")
 message = transcript.text
 
 myMessage = Message(username, message, time, False)
-
-f = open("outBoundMessage.txt", "a")
-f.write(myMessage.__str__() + "\n")
-f.close()
-
-=======
->>>>>>> 0fdb45655527abd588bf4de80e0f4f09630d9d73:app/src/main/java/meetingFlags/meetingFlags/transcriptionwithflags.py
-if transcript.status == aai.TranscriptStatus.error:
-    print(transcript.error)
-else:
-    print(USERNAME + ": " + transcript.text)
-
-now = datetime.now()
 
 myMessage = Message(USERNAME, transcript.text, now.strftime("%H:%M:%S"))
 
