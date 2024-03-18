@@ -3,14 +3,16 @@ import random
 from datetime import datetime
 
 class Message:
-    def __init__(self, username, message, time, pinned):
+    def __init__(self, username, message, time, pinned=False):
         self.username = username
         self.message = message
         self.time = time
-        self.flags = []
+        self.flags = {}
+        self.pinned = pinned
 
     def __str__(self):
-        return f"{self.time} {self.username}: {self.message} {'Flags: ' + ', '.join(self.flags) if self.flags else ''}\n"
+        flag_str = '\n'.join([f"Line {line_number}: Flags: {', '.join(flags)}" for line_number, flags in self.flags.items()])
+        return f"{self.time} {self.username}: {self.message}\n{flag_str}\n"
 
     def setUsername(self, name):
         self.username = name
@@ -30,18 +32,22 @@ class Message:
     def getTime(self):
         return self.time
 
-    def addFlag(self, flag):
-        self.flags.append(flag)
+    def addFlag(self, line_number, flag):
+        if line_number in self.flags:
+            self.flags[line_number].append(flag)
+        else:
+            self.flags[line_number] = [flag]
 
-def searchFlags(messages, flag):
-    flagged_messages = [msg for msg in messages if flag in msg.flags]
-    return flagged_messages
+    @staticmethod
+    def searchFlags(messages, flag):
+        flagged_messages = [msg for msg in messages if flag in msg.flags]
+        return flagged_messages
 
 aai.settings.api_key = "353ff195df9d4243b247c2ecb4b80b46"
 
-USERNAME = "Brianna"
+username = "Brianna"
 
-clips = ["soundFiles/burger-king-foot-lettuce.mp3", "soundFiles/road-work-ahead-made-with-Voicemod.mp3", "soundFiles/no-pomegranates.mp3"]
+clips = ["soundFiles/burger-king-foot-lettuce.mp3", "soundFiles/no-pomegranates.mp3"]
 
 randomFile = random.choice(clips)
 
@@ -56,16 +62,45 @@ message = transcript.text
 
 myMessage = Message(username, message, time, False)
 
-myMessage = Message(USERNAME, transcript.text, now.strftime("%H:%M:%S"))
+# Split the transcript into lines and add line numbers
+lines = transcript.text.split('\n')
+for i, line in enumerate(lines):
+    myMessage.addFlag(i, line)
+
+print("Transcript:")
+print(transcript.text)
+print()    
+
+# myMessage = Message(username, transcript.text, now.strftime("%H:%M:%S"), False)
 
 # Add meeting flags to messages
-myMessage.addFlag("Important")
-myMessage.addFlag("Action Item")
+# myMessage.addFlag("Important")
+# myMessage.addFlag("Action Item")
 
 print(myMessage)
 
-# Example of searching for flagged messages
-flagged_messages = searchFlags([myMessage], "Important")
+# Add meeting flags to transcript lines
+print("Add meeting flags to transcript lines (enter line number and flag separated by space, or 'exit' to finish):")
+while True:
+    input_line = input("Line number and flag: ")
+    if input_line.lower() == 'exit':
+        break
+    line_number, flag = input_line.split()
+    try:
+        line_number = int(line_number)
+        if 0 <= line_number < len(lines):
+            myMessage.addFlag(line_number, flag)
+            print(f"Flag '{flag}' added at line {line_number}.")
+        else:
+            print("Invalid line number. Please enter a valid line number or 'exit' to finish.")
+    except ValueError:
+        print("Invalid input. Please enter a valid line number and flag separated by space or 'exit' to finish.")
+
+# Display flagged messages
+print("\nFlagged Messages:")
+print(myMessage)
+
+flagged_messages = myMessage.searchFlags("Important")
 print("Flagged Messages:")
-for msg in flagged_messages:
-    print(msg)
+for line_number, message in flagged_messages:
+    print(f"Line {line_number}: {message}")
