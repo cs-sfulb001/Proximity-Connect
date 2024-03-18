@@ -14,6 +14,7 @@ class Message:
         flag_str = '\n'.join([f"Line {line_number}: Flags: {', '.join(flags)}" for line_number, flags in self.flags.items()])
         return f"{self.time} {self.username}: {self.message}\n{flag_str}\n"
 
+
     def setUsername(self, name):
         self.username = name
 
@@ -38,10 +39,10 @@ class Message:
         else:
             self.flags[line_number] = [flag]
 
-    @staticmethod
-    def searchFlags(messages, flag):
-        flagged_messages = [msg for msg in messages if flag in msg.flags]
-        return flagged_messages
+    # def searchFlags(self):
+    #     flagged_messages = [line_number for line_number, flags in self.flags.items() if "Important" in flags]
+    #     return flagged_messages
+
 
 aai.settings.api_key = "353ff195df9d4243b247c2ecb4b80b46"
 
@@ -67,9 +68,12 @@ lines = transcript.text.split('\n')
 for i, line in enumerate(lines):
     myMessage.addFlag(i, line)
 
+# Print Transcript
 print("Transcript:")
-print(transcript.text)
-print()    
+lines = transcript.text.split('\n')
+for i, line in enumerate(lines):
+    print(f"LINE {i} : {now.strftime('%H:%M:%S')} : {username} : {line}")
+print()
 
 # myMessage = Message(username, transcript.text, now.strftime("%H:%M:%S"), False)
 
@@ -77,30 +81,27 @@ print()
 # myMessage.addFlag("Important")
 # myMessage.addFlag("Action Item")
 
-print(myMessage)
 
 # Add meeting flags to transcript lines
-print("Add meeting flags to transcript lines (enter line number and flag separated by space, or 'exit' to finish):")
+print("Add meeting flags to transcript lines (enter line number, or 'exit' to finish):")
 while True:
-    input_line = input("Line number and flag: ")
+    input_line = input("Line number: ")
     if input_line.lower() == 'exit':
         break
-    line_number, flag = input_line.split()
     try:
-        line_number = int(line_number)
+        line_number = int(input_line)
         if 0 <= line_number < len(lines):
+            flag = input("Enter flag (leave blank if none): ")
             myMessage.addFlag(line_number, flag)
             print(f"Flag '{flag}' added at line {line_number}.")
         else:
             print("Invalid line number. Please enter a valid line number or 'exit' to finish.")
     except ValueError:
-        print("Invalid input. Please enter a valid line number and flag separated by space or 'exit' to finish.")
+        print("Invalid input. Please enter a valid line number or 'exit' to finish.")
 
 # Display flagged messages
 print("\nFlagged Messages:")
-print(myMessage)
+for line_number, flags in myMessage.flags.items():
+    if flags:
+        print(f"Line {line_number}: {lines[line_number]}")
 
-flagged_messages = myMessage.searchFlags("Important")
-print("Flagged Messages:")
-for line_number, message in flagged_messages:
-    print(f"Line {line_number}: {message}")
