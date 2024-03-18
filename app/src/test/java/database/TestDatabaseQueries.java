@@ -585,4 +585,35 @@ public class TestDatabaseQueries {
         assertEquals(message_id, pinnedMessages[0]);
         assertEquals(message_id3, pinnedMessages[1]);
     }
+    @Test public void testGetLatestMessageID(){
+        /*
+         * Setup
+         */
+        //Create User
+        Object.AddUser(email[0], phonenumber[0], username[0], password[0], date_created[0]);
+        //Create Group
+        int group_id = Object.nextGroupID();
+        Object.CreateGroup(group_id, group_name[0], user_ids[0]);
+        //Create Meeting
+        boolean shareable = false;
+        int meeting_id = Object.getNextMeetingID();
+        Object.CreateMeeting(meeting_id, group_id, meeting_name[0], dateTime[0], shareable);
+        //Create Message
+        int message_id = Object.getNextMessageID(meeting_id);
+        Object.createMessage(user_ids[0], meeting_id, message_id, message[0], dateTime[0], true);
+        int message_id2 = Object.getNextMessageID(meeting_id);
+        Object.createMessage(user_ids[0], meeting_id, message_id2, message[1], dateTime[1], false);
+        /*
+         * Verification
+         */
+        int latestMessageID=Object.getLatestMessageID(meeting_id);
+
+        try{
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[0]);
+        }
+        catch(Exception e){
+            System.out.println("testGetLatestMessageID Error:\n    "+e);
+        }
+        assertEquals(message_id2, latestMessageID);
+    }
 }

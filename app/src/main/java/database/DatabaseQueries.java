@@ -444,4 +444,22 @@ public class DatabaseQueries {
         }
         return null;
     }
+    /*
+     * Returns an int of the latest message_id from the given meeting_id
+     * 
+     * @param meeting_id    meeting id to grab message_id from
+     * @return              the message_id of the latest message or 0 if there is no message
+     */
+    public int getLatestMessageID(int meeting_id){
+        try{
+            ResultSet message_id = PCDatabase.createStatement().executeQuery("select max(message_id) from messages where meeting_id="+meeting_id);
+            message_id.next();
+            return message_id.getInt(1);
+        }
+        catch(Exception e){
+            System.out.println("getLatestMessageID Error:\n    "+e);
+        }
+        return 0;
+    }
+
 }
