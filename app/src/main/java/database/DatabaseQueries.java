@@ -409,7 +409,7 @@ public class DatabaseQueries {
      */
     public void messageSetPinned(int meeting_id, int message_id, boolean pinned){
         try{
-            PCDatabase.createStatement().execute("update messages set pinned=\'"+pinned+"\' where meeting_id="+meeting_id+" and message_id="+message_id);
+            PCDatabase.createStatement().execute("update messages set pinned="+pinned+" where meeting_id="+meeting_id+" and message_id="+message_id);
         }
         catch(Exception e){
             System.out.println("messageSetPinned Error:\n    "+e);
@@ -423,7 +423,7 @@ public class DatabaseQueries {
      */
     public int[] getPinnedMessages(int meeting_id){
         try{
-            ResultSet len = PCDatabase.createStatement().executeQuery("select count(message_id) from messages where pinned='true' and meeting_id="+meeting_id);
+            ResultSet len = PCDatabase.createStatement().executeQuery("select count(message_id) from messages where pinned='1' and meeting_id="+meeting_id);
             int messages[];
             if(len.next()){
                 messages = new int[len.getInt(1)];
@@ -431,7 +431,7 @@ public class DatabaseQueries {
             else{
                 return null;
             }
-            ResultSet pinnedMessages = PCDatabase.createStatement().executeQuery("select message_id from messages where pinned='true' and meeting_id="+meeting_id);
+            ResultSet pinnedMessages = PCDatabase.createStatement().executeQuery("select message_id from messages where pinned='1' and meeting_id="+meeting_id);
             int i=0;
             while(pinnedMessages.next()){
                 messages[i]=pinnedMessages.getInt("message_id");

@@ -518,4 +518,71 @@ public class TestDatabaseQueries {
         assertEquals(dateTime[0], stored_datetime);
         assertEquals(pinned, stored_pinned);
     }
+    @Test public void testMessageSetPinned(){
+        /*
+         * Setup
+         */
+        //Create User
+        Object.AddUser(email[0], phonenumber[0], username[0], password[0], date_created[0]);
+        //Create Group
+        int group_id = Object.nextGroupID();
+        Object.CreateGroup(group_id, group_name[0], user_ids[0]);
+        //Create Meeting
+        boolean shareable = false;
+        int meeting_id = Object.getNextMeetingID();
+        Object.CreateMeeting(meeting_id, group_id, meeting_name[0], dateTime[0], shareable);
+        //Create Message
+        int message_id = Object.getNextMessageID(meeting_id);
+        Object.createMessage(user_ids[0], meeting_id, message_id, message[0], dateTime[0], false);
+        Object.messageSetPinned(meeting_id, message_id, true);
+        /*
+         * Verification
+         */
+        boolean storedPinned=false;
+        try{
+            ResultSet results=Object.PCDatabase.createStatement().executeQuery("select * from messages where message_id="+message_id+" and meeting_id="+meeting_id);
+            results.next();
+            storedPinned=results.getBoolean("pinned");
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[0]);
+        }
+        catch(Exception e){
+            System.out.println("testMessagesSetPinned Error:\n    "+e);
+        }
+        assertEquals(true, storedPinned);
+    }
+    @Test public void testGetPinnedMessages()
+    {
+        /*
+         * Setup
+         */
+        //Create User
+        Object.AddUser(email[0], phonenumber[0], username[0], password[0], date_created[0]);
+        //Create Group
+        int group_id = Object.nextGroupID();
+        Object.CreateGroup(group_id, group_name[0], user_ids[0]);
+        //Create Meeting
+        boolean shareable = false;
+        int meeting_id = Object.getNextMeetingID();
+        Object.CreateMeeting(meeting_id, group_id, meeting_name[0], dateTime[0], shareable);
+        //Create Message
+        int message_id = Object.getNextMessageID(meeting_id);
+        Object.createMessage(user_ids[0], meeting_id, message_id, message[0], dateTime[0], true);
+        int message_id2 = Object.getNextMessageID(meeting_id);
+        Object.createMessage(user_ids[0], meeting_id, message_id2, message[1], dateTime[1], false);
+        int message_id3 = Object.getNextMessageID(meeting_id);
+        Object.createMessage(user_ids[0], meeting_id, message_id3, message[2], dateTime[2], true);
+        /*
+         * Verification
+         */
+        int[] pinnedMessages=Object.getPinnedMessages(meeting_id);
+
+        try{
+            Object.PCDatabase.createStatement().execute("delete from users where user_id="+user_ids[0]);
+        }
+        catch(Exception e){
+            System.out.println("testGetPinnedMessages Error:\n    "+e);
+        }
+        assertEquals(message_id, pinnedMessages[0]);
+        assertEquals(message_id3, pinnedMessages[1]);
+    }
 }
