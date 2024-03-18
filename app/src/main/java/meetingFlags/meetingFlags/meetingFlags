@@ -1,82 +1,68 @@
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.clickable
-import androidx.compose.ui.verticalScroll
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import androidx.compose.ui.unit.dp
+import java.util.*
 
 // Define data class representing each entry in the transcript
-data class TranscriptEntry(val timestamp: Long, val sentence: String, val flagTimestamp: Long? = null)
+data class TranscriptEntry(val sentence: String, var flagged: Boolean = false)
 
-// Define object to handle timestamp formatting
-object TimestampHandler {
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-
-    // Function format timestamp
-    fun formatTimestamp(timestamp: Long): String {
-        val date = Date(timestamp)
-        return dateFormat.format(date)
-    }
-
-    // Function to format meeting flag timestamp
-    fun formatMeetingFlagTimestamp(timestamp: Long): String {
-        val date = Date(timestamp)
-        return dateFormat.format(date)
-    }
-
-    // Function to search for meeting flags
-    fun searchMeetingFlags(transcript: List<TranscriptEntry>): List<TranscriptEntry> {
-        return transcript.filter { it.sentence.contains("[FLAG]", ignoreCase = true) }
+@Composable
+fun DisplayTranscript(transcript: List<TranscriptEntry>, onFlagAdded: (Int) -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        horizontalAlignment = Alignment.Start
+    ) {
+        transcript.forEachIndexed { index, entry ->
+            TranscriptEntryRow(entry, index + 1, onFlagAdded)
+        }
     }
 }
 
-// Composable function to display transcript entry
 @Composable
-fun TranscriptEntryWithTimestampAndFlag(entry: TranscriptEntry) {
+fun TranscriptEntryRow(entry: TranscriptEntry, lineNumber: Int, onFlagAdded: (Int) -> Unit) {
     Row {
-        Text(text = "${TimestampHandler.formatTimestamp(entry.timestamp)}: ${entry.sentence} ${if (entry.flagTimestamp != null) "[FLAG]" else ""}")
+        Text(text = "$lineNumber: ${entry.sentence}")
+        if (!entry.flagged) {
+            Button(
+                onClick = { onFlagAdded(lineNumber) },
+                modifier = Modifier.padding(start = 8.dp)
+            ) {
+                Text("Add Flag")
+            }
+        }
     }
 }
 
-// Composable function display the transcript
 @Composable
-fun TranscriptWithTimestampsAndFlags(transcript: List<TranscriptEntry>) {
-    transcript.forEach { entry ->
-        TranscriptEntryWithTimestampAndFlag(entry = entry)
+fun TranscriptScreen(transcript: List<TranscriptEntry>) {
+    var flaggedLineNumbers by remember { mutableStateOf(emptyList<Int>()) }
+
+    DisplayTranscript(transcript = transcript) { lineNumber ->
+        flaggedLineNumbers += lineNumber
+    }
+
+    if (flaggedLineNumbers.isNotEmpty()) {
+        FlaggedMessages(flaggedLineNumbers = flaggedLineNumbers, transcript = transcript)
     }
 }
 
 @Composable
-fun MeetingFlagText(
-    transcriptEntry: TranscriptEntry,
-    modifier: Modifier = Modifier,
-    onMeetingFlagAdded: (TranscriptEntry, Long) -> Unit
-) {
-    Row(modifier = modifier.verticalScroll()) {
-        Text(
-            text = transcriptEntry.sentence,
-            modifier = modifier,
-        )
-        Text(
-            text = "Flag Timestamp: ${
-                if (transcriptEntry.flagTimestamp != null)
-                    TimestampHandler.formatMeetingFlagTimestamp(transcriptEntry.flagTimestamp)
-                else "No Flag"
-            }",
-            modifier = modifier,
-        )
-        if (transcriptEntry.flagTimestamp == null) {
-            Text(
-                text = "Add Meeting Flag",
-                modifier = modifier.clickable {
-                    // Simulate add meeting flag to current transcript entry
-                    val currentTimeMillis = System.currentTimeMillis()
-                    onMeetingFlagAdded(transcriptEntry, currentTimeMillis)
-                }
-            )
+fun FlaggedMessages(flaggedLineNumbers: List<Int>, transcript: List<TranscriptEntry>) {
+    Column(
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        horizontalAlignment = Alignment.Start
+    ) {
+        Text("Flagged Messages:")
+        flaggedLineNumbers.forEach { lineNumber ->
+            val entry = transcript[lineNumber - 1]
+            Text(text = "$lineNumber: ${entry.sentence}")
         }
     }
 }
