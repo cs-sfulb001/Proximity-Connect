@@ -3,24 +3,49 @@ package com.example.proximity_connect
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
 class SignUp : AppCompatActivity() {
-    private lateinit var button4: Button
-    private lateinit var button5: Button
-    private lateinit var button6: Button
+    private lateinit var emails: EditText
+    private lateinit var phnumba: EditText
+    private lateinit var psswrd: EditText
+    private lateinit var Signing: Button
+    private lateinit var guestP: Button
+    private lateinit var golog: Button
+
     protected override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
-        button4 = findViewById<Button>(R.id.SigningIN)
-        button4.setOnClickListener { openActivityhomePage() }
-        button5 = findViewById<Button>(R.id.conttt)
-        button5.setOnClickListener { openActivitybypassPage() }
-        button6 = findViewById<Button>(R.id.log)
-        button6.setOnClickListener { openActivityjoinPage() }
+
+        phnumba = findViewById<EditText>(R.id.enterTextEmail)
+        psswrd = findViewById<EditText>(R.id.enterTextPhone)
+        emails = findViewById<EditText>(R.id.editTextTextPassword)
+        Signing = findViewById<Button>(R.id.SigningIN)
+        Signing.setOnClickListener { openActivityhomePage() }
+        guestP = findViewById<Button>(R.id.conttt)
+        guestP.setOnClickListener { openActivitybypassPage() }
+        golog = findViewById<Button>(R.id.log)
+        golog.setOnClickListener { openActivityjoinPage() }
+
+
     }
 
     fun openActivityhomePage() {
+        var databaseQueries = DatabaseQueries()
+        val theemails = emails.text.toString()
+        val thenumba = phnumba.text.toString()
+        val thepsswd = psswrd.text.toString()
+        val calendar = Calendar.getInstance().time
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val current = dateFormat.format(calendar).toString()
+        val temp = theemails + " " + current
+        databaseQueries.AddUser(theemails, thenumba, temp, thepsswd, current)
+
+
         val intent: Intent = Intent(this, homeMain::class.java)
         startActivity(intent)
     }

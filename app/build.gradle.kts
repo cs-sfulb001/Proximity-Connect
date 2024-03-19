@@ -52,6 +52,8 @@ android {
 
 dependencies {
     implementation("com.google.android.material:material:1.2.0")
+    implementation("com.google.android.gms:play-services-gcm:17.0.0")
+    implementation("com.android.volley:volley:1.2.1")
     val fragment_version ="1.6.1"
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
