@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import database.DatabaseQueries
+import android.os.StrictMode
 
 class SignUp : AppCompatActivity() {
     private lateinit var emails: EditText
@@ -18,6 +20,8 @@ class SignUp : AppCompatActivity() {
     private lateinit var golog: Button
 
     protected override fun onCreate(savedInstanceState: Bundle?) {
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
@@ -35,7 +39,7 @@ class SignUp : AppCompatActivity() {
     }
 
     fun openActivityhomePage() {
-        var databaseQueries = DatabaseQueries()
+        val databaseQueries: DatabaseQueries = DatabaseQueries()
         val theemails = emails.text.toString()
         val thenumba = phnumba.text.toString()
         val thepsswd = psswrd.text.toString()
@@ -43,7 +47,8 @@ class SignUp : AppCompatActivity() {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd")
         val current = dateFormat.format(calendar).toString()
         val temp = theemails + " " + current
-        databaseQueries.AddUser(theemails, thenumba, temp, thepsswd, current)
+        val user_id = databaseQueries.AddUser(theemails, thenumba, temp, thepsswd, current)
+        print(user_id)
 
 
         val intent: Intent = Intent(this, homeMain::class.java)

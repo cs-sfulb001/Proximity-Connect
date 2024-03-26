@@ -61,7 +61,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
-    implementation("mysql:mysql-connector-java:8.0.33")
+    implementation("mysql:mysql-connector-java:5.1.49")
     //hamcrest
     testImplementation("org.hamcrest:hamcrest-library:2.2")
     implementation("androidx.fragment:fragment:$fragment_version")
@@ -96,6 +96,7 @@ dependencies {
     implementation("no.nordicsemi.android.kotlin.ble:uiscanner:1.0.15")
     implementation("no.nordicsemi.android.common:theme:1.9.4")
     implementation("androidx.activity:activity:1.9.0-alpha03")
+    implementation("androidx.multidex:multidex:2.0.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")

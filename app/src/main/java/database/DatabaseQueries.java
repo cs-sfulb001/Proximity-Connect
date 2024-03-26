@@ -17,7 +17,7 @@ public class DatabaseQueries {
             PCDatabase = DriverManager.getConnection(url, username, password);
         }
         catch (Exception e){
-            System.out.println(e);
+            System.out.println("Connection Error:\n    "+e);
         }
     }
     
